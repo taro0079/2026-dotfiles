@@ -1,0 +1,57 @@
+theme = "tokyonight_moon"
+[editor]
+line-number = "relative"
+mouse = true
+true-color = true
+color-modes = true
+auto-save = true
+cursorline = true
+idle-timeout = 10
+completion-timeout = 10
+end-of-line-diagnostics = "hint"
+
+[editor.file-picker]
+hidden = false
+git-ignore = true
+ignore = true
+
+[editor.cursor-shape]
+insert = "block"
+normal = "block"
+select = "block"
+
+[editor.lsp]
+display-messages = true
+snippets = true
+
+[editor.soft-wrap]
+enable = true
+
+# [editor.whitespace]
+# render = "all"
+
+[editor.indent-guides]
+render = false
+
+[keys.insert]
+"C-[" = "normal_mode"
+[keys.normal]
+"C-S-`" = "switch_to_uppercase"
+C-y = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+
+[keys.normal."'"]
+g = [":new", ":insert-output lazygit", ":redraw", "jump_backward", ":reload-all"]
+r = [':sh php-cs-fixer fix %{buffer_name} --config ./.php-cs-fixer.dist.php', ':reload-all']
+t = [':sh rpst-php-unit.sh %{buffer_name}',":vsplit-new",':insert-output cat /tmp/rpst-php-unit']
+# t = [
+#   ":vsplit-new",
+#   ":insert-output rpst-php-unit.sh %{buffer_name}"
+# ]
+[editor.inline-diagnostics]
+cursor-line="error"

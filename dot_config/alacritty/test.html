@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/Users/taro_morita/.config/alacritty/alacritty.toml</title>
+<meta name="colorscheme" content="rose-pine"></meta>
+<style>
+* {font-family: HackGen Console NF,monospace}
+body {background-color: #faf4ed; color: #575279}
+.-punctuation-bracket {color: #797593}
+.-property {color: #56949f; font-style: italic}
+.DiagnosticVirtualTextError {color: #b4637a; background-color: #f3e6e2}
+.Comment {color: #797593; font-style: italic}
+.String {color: #ea9d34}
+.-spell {}
+.Number {color: #ea9d34}
+.Operator {color: #797593}
+.-punctuation-delimiter {color: #797593}
+</style>
+</head>
+<body style="display: flex">
+<pre>
+<span class="-punctuation-bracket">[</span><span class="-property">window</span><span class="-punctuation-bracket">]</span>
+<span class="Comment"><span class="-spell"># opacity = 0.98</span></span>
+<span class="-property">padding</span> <span class="Operator">=</span> <span class="-punctuation-bracket">{</span> <span class="-property">x</span> <span class="Operator">=</span> <span class="Number">0</span><span class="-punctuation-delimiter">,</span> <span class="-property">y</span> <span class="Operator">=</span> <span class="Number">0</span> <span class="-punctuation-bracket">}</span>
+<span class="Comment"><span class="-spell"># blur = true</span></span>
+<span class="-property">option_as_alt</span> <span class="Operator">=</span> <span class="String">&quot;Both&quot;</span>
+
+<span class="-punctuation-bracket">[</span><span class="-property">terminal</span><span class="-punctuation-bracket">]</span>
+<span class="-property">osc52</span> <span class="Operator">=</span> <span class="String">&quot;CopyPaste&quot;</span>
+
+<span class="-punctuation-bracket">[</span><span class="-property">font</span><span class="-punctuation-bracket">]</span>
+<span class="-property">size</span> <span class="Operator">=</span> <span class="Number">16</span>
+<span class="-property">normal</span> <span class="Operator">=</span> <span class="-punctuation-bracket">{</span> <span class="-property">family</span> <span class="Operator">=</span> <span class="String">&quot;Iosevka Nerd Font&quot;</span><span class="-punctuation-delimiter">,</span> <span class="-property">style</span> <span class="Operator">=</span> <span class="String">&quot;Regular&quot;</span> <span class="-punctuation-bracket">}</span>
+<span class="Comment"><span class="-spell"># normal = { family = &quot;Fira Code&quot;, style = &quot;Regular&quot; }</span></span>
+
+<span class="Comment"><span class="-spell"># [shell]</span></span>
+<span class="Comment"><span class="-spell"># program = &quot;/opt/homebrew/bin/zsh&quot;</span></span>
+<span class="-punctuation-bracket">[</span><span class="-property">env</span><span class="-punctuation-bracket">]</span>
+<span class="Comment"><span class="-spell"># TERM = &quot;xterm-256color&quot;</span></span>
+<span class="-property">TERM</span> <span class="Operator">=</span> <span class="String">&quot;alacritty&quot;</span>
+
+<span class="-punctuation-bracket">[</span><span class="-property">general</span><span class="-punctuation-bracket">]</span>
+<span class="-property">import</span> <span class="Operator">=</span> <span class="-punctuation-bracket">[</span>
+    <span class="String">&quot;~/.config/alacritty/rose-pine-dawn.toml&quot;</span>
+<span class="-punctuation-bracket">]</span>
+
+
+<span class="-punctuation-bracket">[</span><span class="-property">cursor</span><span class="-punctuation-bracket">]</span>
+<span class="-property">style</span> <span class="Operator">=</span> <span class="String">&quot;Beam&quot;</span>
+
+
+<span class="Comment"><span class="-spell"># [keyboard]</span></span>
+<span class="Comment"><span class="-spell"># bindings = [</span></span>
+<span class="Comment"><span class="-spell">#   { key = &quot;A&quot;, mods = &quot;Alt&quot;, chars = &quot;x1ba&quot; },</span></span>     <span class="DiagnosticVirtualTextError">■</span><span class="DiagnosticVirtualTextError"> `ba` should be `by`, `be`</span>
+<span class="Comment"><span class="-spell">#    { key= &quot;B&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bb&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;C&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bc&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;D&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bd&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;E&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1be&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;F&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bf&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;G&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bg&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;H&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bh&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;I&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bi&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;J&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bj&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;K&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bk&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;L&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bl&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;M&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bm&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;N&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bn&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;O&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bo&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;P&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bp&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Q&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bq&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;R&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1br&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;S&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bs&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;T&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bt&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;U&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bu&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;V&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bv&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;W&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bw&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;X&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bx&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Y&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1by&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Z&quot;,         mods= &quot;Alt&quot;,       chars= &quot;x1bz&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;A&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bA&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;B&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bB&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;C&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bC&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;D&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bD&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;E&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bE&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;F&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bF&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;G&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bG&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;H&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bH&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;I&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bI&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;J&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bJ&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;K&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bK&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;L&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bL&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;M&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bM&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;N&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bN&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;O&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bO&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;P&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bP&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Q&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bQ&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;R&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bR&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;S&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bS&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;T&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bT&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;U&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bU&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;V&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bV&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;W&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bW&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;X&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bX&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Y&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bY&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Z&quot;,         mods= &quot;Alt|Shift&quot;, chars= &quot;x1bZ&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key1&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b1&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key2&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b2&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key3&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b3&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key4&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b4&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key5&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b5&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key6&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b6&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key7&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b7&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key8&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b8&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key9&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b9&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key0&quot;,      mods= &quot;Alt&quot;,       chars= &quot;x1b0&quot;                       },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Space&quot;,     mods= &quot;Control&quot;,   chars= &quot;x00&quot;                        },</span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;`&quot;,     mods= &quot;Alt&quot;,       chars= &quot;x1b`&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;`&quot;,     mods= &quot;Alt|Shift&quot;, chars= &quot;x1b~&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Period&quot;,    mods= &quot;Alt&quot;,       chars= &quot;x1b.&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key8&quot;,      mods= &quot;Alt|Shift&quot;, chars= &quot;x1b*&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key3&quot;,      mods= &quot;Alt|Shift&quot;, chars= &quot;x1b#&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Period&quot;,    mods= &quot;Alt|Shift&quot;, chars= &quot;x1b&gt;&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Comma&quot;,     mods= &quot;Alt|Shift&quot;, chars= &quot;x1b&lt;&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Minus&quot;,     mods= &quot;Alt|Shift&quot;, chars= &quot;x1b_&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key5&quot;,      mods= &quot;Alt|Shift&quot;, chars= &quot;x1b%&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Key6&quot;,      mods= &quot;Alt|Shift&quot;, chars= &quot;x1b^&quot;                       }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Backslash&quot;, mods= &quot;Alt&quot;,       chars= &quot;x1b\\&quot;                      }, </span></span>
+<span class="Comment"><span class="-spell">#    { key= &quot;Backslash&quot;, mods= &quot;Alt|Shift&quot;, chars= &quot;x1b|&quot;                       } </span></span>
+<span class="Comment"><span class="-spell"># ]</span></span>
+
+</pre>
+</body>
+</html>

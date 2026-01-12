@@ -1,0 +1,4 @@
+* Neorgのインストール
+  @code sh
+  :Neorg sync-parsers
+  @end

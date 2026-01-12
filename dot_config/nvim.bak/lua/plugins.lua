@@ -1,0 +1,701 @@
+local file_exist = require "helper.file_exist"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+    -- color schemas
+
+    {
+        "abecodes/tabout.nvim",
+        config = function()
+            require('tabout').setup {
+                tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+                backwards_tabkey = '<S-Tab>',
+                act_as_tab = true,
+                enable_backwards = true,
+                completion = true,
+                tabouts = {
+                    { open = '(', close = ')' },
+                    { open = '[', close = ']' },
+                    { open = '{', close = '}' },
+                    { open = '"', close = '"' },
+                    { open = "'", close = "'" },
+                    { open = '`', close = '`' },
+                },
+            }
+        end
+    },
+    {
+        "zenbones-theme/zenbones.nvim",
+        dependencies = "rktjmp/lush.nvim",
+        config = function()
+            -- vim.cmd('colorscheme zenbones')
+        end
+    },
+    {
+        "EdenEast/nightfox.nvim",
+        config = function()
+            require("plugins.nightfox")
+            -- vim.cmd('colorscheme nightfox')
+        end
+    }, -- lazy
+    {
+        'Mofiqul/dracula.nvim',
+        config = function()
+        end
+    },
+    {
+        "colepeters/spacemacs-theme.vim",
+        config = function()
+            -- vim.cmd('colorscheme spacemacs-theme')
+        end
+    },
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function()
+            require("plugins.lualine")
+        end
+
+    },
+    {
+        'rcarriga/nvim-notify',
+        config = function()
+            local notify = require "notify"
+            notify.setup()
+            vim.notify = notify
+        end
+    },
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        -- config = function()
+        --     vim.cmd [[colorscheme rose-pine]]
+        --     require("plugins.rose-pine")
+        -- end
+    },
+    {
+        'projekt0n/github-nvim-theme',
+        config = function()
+            -- vim.cmd('colorscheme github_light_tritanopia')
+        end
+    },
+    {
+        'wolverian/minimal',
+        config = function()
+            -- vim.cmd('colorscheme minimal')
+        end
+
+    },
+    {
+        "sotte/presenting.nvim",
+        opts = {
+            -- fill in your options here
+            -- see :help Presenting.config
+        },
+        cmd = { "Presenting" },
+    },
+    {
+        "lunarvim/horizon.nvim",
+        -- config = function()
+        --     vim.cmd [[colorscheme horizon]]
+        -- end
+    },
+    {
+        'shmerl/neogotham',
+        lazy = false,    -- to make sure it's loaded on startup
+        priority = 1000, -- to load before other plugins
+        config = function()
+            -- vim.cmd.colorscheme("neogotham")
+        end
+    },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
+        config = function()
+            require("plugins.tokyonight")
+            vim.cmd [[colorscheme tokyonight-moon]]
+        end,
+    },
+
+    {
+        "sainnhe/gruvbox-material",
+        config = function()
+            -- vim.cmd [[colorscheme gruvbox-material]]
+        end
+    },
+    {
+        "craftzdog/solarized-osaka.nvim",
+        lazy = false,
+        config = function()
+            -- vim.cmd('colorscheme solarized-osaka')
+        end,
+        priority = 1000,
+        opts = {},
+    },
+    {
+        'vim-denops/denops.vim'
+
+    },
+    {
+        'terryma/vim-expand-region',
+        config = function()
+            vim.cmd [[vnoremap v <Plug>(expand_region_expand)]]
+            vim.cmd [[vnoremap V <Plug>(expand_region_shrink)]]
+        end
+
+    },
+    {
+        'lambdalisue/vim-gin'
+    },
+    {
+        'neovim/nvim-lspconfig'
+    },
+    {
+        'VonHeikemen/lsp-zero.nvim',
+        branch = 'v3.x',
+        dependencies = {
+            -- LSP Support
+            { 'neovim/nvim-lspconfig' },
+            { 'williamboman/mason.nvim' },
+            { 'williamboman/mason-lspconfig.nvim' },
+
+            -- Autocompletion
+            { 'hrsh7th/nvim-cmp' },
+            { 'hrsh7th/cmp-buffer' },
+            { 'hrsh7th/cmp-cmdline' },
+            { 'hrsh7th/cmp-path' },
+            { 'saadparwaiz1/cmp_luasnip' },
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'hrsh7th/cmp-nvim-lua' },
+
+            -- Snippets
+            { 'L3MON4D3/LuaSnip' },
+            -- { 'rafamadriz/friendly-snippets' },
+        },
+        config = function()
+            require('plugins.lsp')
+        end
+    },
+    {
+        "xero/miasma.nvim",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            -- vim.cmd("colorscheme miasma")
+        end,
+    },
+    {
+        "dgox16/oldworld.nvim",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            -- vim.cmd [[colorscheme oldworld]]
+        end
+    },
+    {
+        'taro0079/path_to_clipboard',
+        event = "BufEnter",
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        event = "BufEnter",
+        config = function()
+            require("plugins.tree-sitter")
+        end,
+    },
+    {
+        'tpope/vim-fugitive',
+        event = "BufEnter"
+
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-context',
+        config = function()
+            require("plugins.treesitter-context")
+        end,
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+
+        }
+    },
+    -- whitespaceを消してくれるやつ
+    {
+        'cappyzawa/trim.nvim',
+        config = function()
+            require('plugins.trim')
+        end,
+        event = "InsertEnter",
+    },
+    {
+        "RRethy/nvim-treesitter-endwise",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+
+        },
+        event = "InsertEnter",
+    },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
+        },
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = "nvim-tree/nvim-web-devicons",
+        config = function()
+            require("trouble").setup {
+
+            }
+        end,
+        cmd = "Trouble"
+    },
+    {
+        "smartpde/telescope-recent-files",
+    },
+    {
+        "nvim-telescope/telescope.nvim",
+        -- lazy=true,
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("plugins.telescope")
+        end,
+    },
+    { "stevearc/dressing.nvim",  event = "VeryLazy" },
+
+    {
+        "windwp/nvim-ts-autotag",
+        config = function() require "plugins.nvim-ts-autotag" end,
+        event = "InsertEnter",
+        ft = { "html", "javascript", "javascriptreact", "typescriptreact", "svelte", "vue", "markdown" }
+    },
+    {
+        "numToStr/Comment.nvim",
+        config = function()
+            require("Comment").setup({
+                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+            })
+        end,
+    },
+    {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+    },
+    {
+        "windwp/nvim-autopairs",
+        config = function()
+            require("nvim-autopairs").setup()
+        end,
+        event = "InsertEnter",
+    },
+    {
+        "tpope/vim-repeat",
+        event = "BufEnter"
+    },
+    -- { "t9md/vim-quickhl",          event = "BufEnter" },
+    { "junegunn/vim-easy-align", event = "BufEnter" },
+    {
+        "ziontee113/icon-picker.nvim",
+        event = "BufEnter",
+        config = function()
+            require("icon-picker")
+        end,
+        event = "InsertEnter"
+    },
+
+    {
+        'lewis6991/gitsigns.nvim',
+        event = "BufEnter",
+        config = function()
+            require("plugins.gitsign")
+        end,
+    },
+    {
+        "j-hui/fidget.nvim",
+        tag = "legacy",
+        event = "LspAttach",
+        opts = {
+            -- options
+        },
+    },
+    {
+        'folke/lsp-colors.nvim',
+        event = "BufEnter",
+    },
+    { 'RRethy/vim-illuminate',   event = "BufEnter" },
+    {
+        'mattn/emmet-vim',
+        event = "InsertEnter"
+    },
+    {
+        "kylechui/nvim-surround",
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        event = "VeryLazy",
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+    },
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
+        keys = {
+            { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+            { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+            { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+            { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+            { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+        },
+    },
+    {
+        'tpope/vim-surround',
+        event = "InsertEnter",
+    },
+    {
+        "theprimeagen/harpoon",
+        config = function()
+            require("plugins.harpoon")
+        end
+    },
+    {
+        'vim-skk/eskk.vim',
+        config = function()
+            vim.cmd [[let g:eskk#directory        = "~/.config/eskk"]]
+            vim.cmd [[let g:eskk#dictionary       = { 'path': "~/.config/eskk/my_jisyo", 'sorted': 1, 'encoding': 'utf-8',}]]
+            vim.cmd [[let g:eskk#large_dictionary = {'path': "~/.config/eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp',}]]
+        end
+
+    },
+    {
+        'ta-tikoma/php.easy.nvim',
+        ft = "php",
+        config = true,
+        keys = {
+            { '-b',   '<CMD>PHPEasyDocBlock<CR>' },
+            { '-r',   '<CMD>PHPEasyReplica<CR>' },
+            { '-c',   '<CMD>PHPEasyCopy<CR>' },
+            { '-d',   '<CMD>PHPEasyDelete<CR>' },
+            { '-ii',  '<CMD>PHPEasyInitInterface<CR>' },
+            { '-ic',  '<CMD>PHPEasyInitClass<CR>' },
+            { '-iac', '<CMD>PHPEasyInitAbstractClass<CR>' },
+            { '-it',  '<CMD>PHPEasyInitTrait<CR>' },
+            { '-ie',  '<CMD>PHPEasyInitEnum<CR>' },
+            { '-ac',  '<CMD>PHPEasyAppendConstruct<CR>' },
+            -- { '-ac',  '<CMD>PHPEasyAppendConstant<CR>' },
+            { '-ap',  '<CMD>PHPEasyAppendProperty<CR>' },
+            { '-am',  '<CMD>PHPEasyAppendMethod<CR>' },
+            { '-aa',  '<CMD>PHPEasyAppendArgument<CR>' },
+        }
+    },
+    {
+        "stevearc/conform.nvim",
+        config = function()
+            require("plugins.conform")
+        end,
+        event = { "BufWritePre" },
+        cmd = { "ConformInfo" }
+    },
+    {
+        "mfussenegger/nvim-lint",
+        event = {
+            "BufReadPre",
+            "BufNewFile"
+        },
+        config = function()
+            require("plugins.nvim-lint")
+        end
+    },
+    { 'akinsho/toggleterm.nvim', version = "*",     config = function() require('plugins.toggleterm') end },
+
+    {
+        "nvim-neotest/neotest",
+        -- lazy = true,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-neotest/nvim-nio",
+            "olimorris/neotest-phpunit",
+            -- "praem90/neotest-docker-phpunit.nvim"
+        },
+        config = function()
+            -- local file_exists = require("helper.file_exist")
+            require("neotest").setup({
+                adapters = {
+                    require("neotest-phpunit")({
+                        phpunit_cmd = function()
+                            -- return "symfony php bin/phpunit"
+                            -- if file_exist.file_exist("bin/phpunit") then
+                            --     return vim.tbl_flatten({
+                            --         "docker",
+                            --         "compose",
+                            --         "-f",
+                            --         "../docker-compose.yml",
+                            --         "run",
+                            --         "--rm",
+                            --         "devcontainer",
+                            --         "symfony",
+                            --         "php",
+                            --         "bin/phpunit",
+                            --     })
+                            -- elseif file_exist.file_exist("vendor/bin/phpunit") then
+                            return "vendor/bin/phpunit"
+                            -- end
+                            -- "docker exec oms-dev-docker-oms-backend-1 symfony php bin/phpunit"
+                        end,
+                    })
+                },
+            })
+        end
+    },
+    {
+        'tpope/vim-dadbod'
+
+    },
+    {
+        "aerosol/dumbotron.vim",
+        config = function()
+            -- vim.cmd [[colorscheme dumbotron]]
+        end
+    },
+    {
+        "vhyrro/luarocks.nvim",
+        priority = 1000,
+        config = true,
+
+    },
+    {
+        "phpactor/phpactor",
+        ft = "php",
+        -- tag = "*",
+        build = "composer install --no-dev -o",
+    },
+    {
+        "vim-scripts/smartchr",
+        config = function()
+            vim.cmd [[autocmd FileType php inoremap <buffer> <expr> . smartchr#one_of('$', '->', '.')]]
+        end
+    },
+    { 'echasnovski/mini.ai', version = false },
+
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                { path = "luvit-meta/library", words = { "vim%.uv" } },
+            },
+        },
+    },
+    {
+        'stevearc/oil.nvim',
+        ---@module 'oil'
+        ---@type oil.SetupOpts
+        opts = {},
+        config = function()
+            require('oil').setup({
+                keymaps = {
+                    ['--'] = "actions.parent"
+                }
+            })
+        end,
+        -- Optional dependencies
+        dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000,
+        config = function()
+            -- vim.cmd [[colorscheme catppuccin]]
+        end
+    },
+    {
+        "chentoast/marks.nvim",
+        event = "VeryLazy",
+        opts = {},
+    },
+    {
+        "ojroques/nvim-osc52",
+        config = function()
+            local osc52 = require("osc52")
+            osc52.setup({
+                max_length = 0, -- Maximum length of selection (0 for no limit)
+                silent = false, -- Disable message on successful copy
+                trim = false,   -- Trim surrounding whitespaces before copy
+            })
+
+            local function copy(lines, _)
+                osc52.copy(table.concat(lines, "\n"))
+            end
+
+            local function paste()
+                return { vim.fn.split(vim.fn.getreg('"'), "\n"), vim.fn.getregtype('"') }
+            end
+
+            vim.g.clipboard = {
+                name = "osc52",
+                copy = {
+                    ["+"] = copy,
+                    ["*"] = copy,
+                },
+                paste = {
+                    ["+"] = paste,
+                    ["*"] = paste,
+                },
+            }
+        end
+    },
+    {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        ---@type snacks.Config
+        opts = {
+            bigfile      = { enabled = true },
+            dashboard    = { enabled = true },
+            explorer     = { enabled = true },
+            indent       = { enabled = true },
+            input        = { enabled = true },
+            notifier     = { enabled = true, timeout = 3000 },
+            picker       = { enabled = true },
+            quickfile    = { enabled = true },
+            scope        = { enabled = true },
+            scroll       = { enabled = true },
+            statuscolumn = { enabled = true },
+            words        = { enabled = true },
+
+        },
+
+        keys = {
+            { "<leader><leader>", function() Snacks.picker.smart() end,                                   desc = "Smart Find Files" },
+            { "<leader>,",        function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
+            { "<leader>/",        function() Snacks.picker.grep() end,                                    desc = "Grep" },
+            { "<leader>:",        function() Snacks.picker.command_history() end,                         desc = "Command History" },
+            { "<leader>n",        function() Snacks.picker.notifications() end,                           desc = "Notifications History" },
+            { "<leader>e",        function() Snacks.picker.explorer() end,                                desc = "File Explorer" },
+            { "<leader>fc",       function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
+            { "<leader>ff",       function() Snacks.picker.files() end,                                   desc = "Find File" },
+            { "<leader>fg",       function() Snacks.picker.git_files() end,                               desc = "Find Git File" },
+            { "<leader>fp",       function() Snacks.picker.projects() end,                                desc = "Projects" },
+            { "<leader>fr",       function() Snacks.picker.recent() end,                                  desc = "Recents" },
+            { "<leader>gb",       function() Snacks.picker.git_branches() end,                            desc = "Git branches" },
+            { "<leader>gl",       function() Snacks.picker.git_log() end,                                 desc = "Git Log" },
+            { "<leader>gL",       function() Snacks.picker.git_log_line() end,                            desc = "Git Log Line" },
+            { "<leader>gs",       function() Snacks.picker.git_status() end,                              desc = "Git Status" },
+            { "<leader>gS",       function() Snacks.picker.git_stash() end,                               desc = "Git Stash" },
+            { "<leader>gd",       function() Snacks.picker.git_diff() end,                                desc = "Git Diff" },
+            { "<leader>gf",       function() Snacks.picker.git_log_file() end,                            desc = "Git Log File" },
+            -- Grep
+            { "<leader>sb",       function() Snacks.picker.lines() end,                                   desc = "Buffer Lines" },
+            { "<leader>sB",       function() Snacks.picker.grep_buffers() end,                            desc = "Grep Open Buffer" },
+            { "<leader>sk",       function() Snacks.picker.keymaps() end,                                 desc = "Keymaps" },
+            { "<leader>sd",       function() Snacks.picker.diagnostics() end,                             desc = "Keymaps" },
+            { "<leader>sm",       function() Snacks.picker.marks() end,                                   desc = "Marks" },
+            { "<leader>uC",       function() Snacks.picker.colorschemes() end,                            desc = "Colorschemes" },
+            { "<leader>cR",       function() Snacks.rename.rename_file() end,                             desc = "Rename File" },
+        },
+        init = function()
+
+        end
+    },
+    {
+        "NickvanDyke/opencode.nvim",
+        dependencies = {
+            { "folke/snacks.nvim", input = {}, picker = {}, terminal = {} },
+        },
+        config = function()
+            vim.o.autoread = true
+
+            -- Recommended/example keymaps.
+            vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end,
+                { desc = "Ask opencode" })
+            vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,
+                { desc = "Execute opencode action…" })
+            vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end,
+                { desc = "Toggle opencode" })
+
+            vim.keymap.set({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
+                { expr = true, desc = "Add range to opencode" })
+            vim.keymap.set("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
+                { expr = true, desc = "Add line to opencode" })
+
+            vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,
+                { desc = "opencode half page up" })
+            vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
+                { desc = "opencode half page down" })
+
+            -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
+            vim.keymap.set("n", "+", "<C-a>", { desc = "Increment", noremap = true })
+            vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement", noremap = true })
+        end
+
+    },
+    {
+        "mhartington/formatter.nvim",
+        config = function()
+            require("formatter").setup({
+                filetype = {
+                    javascript = { require("formatter.filetypes.javascript").biome },
+                    javascriptreact = { require("formatter.filetypes.javascriptreact").biome },
+                    typescript = { require("formatter.filetypes.typescript").biome },
+                    typescriptreact = { require("formatter.filetypes.typescriptreact").biome },
+                },
+            })
+        end
+    },
+    {
+        "kdheepak/lazygit.nvim",
+        lazy = true,
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile"
+        },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        keys = {
+            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+        }
+
+    }
+
+
+})
