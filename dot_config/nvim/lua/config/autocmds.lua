@@ -7,7 +7,27 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+-- =============================================================================
+-- カスタムコマンドの登録
+-- =============================================================================
+require("utils.phpunit").setup()
+require("utils.transport").setup()
+
+-- =============================================================================
+-- rpst-v2 ファイル保存時に自動転送
+-- =============================================================================
+local transport = require("utils.transport")
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*/rpst-v2/*",
+  callback = function()
+    transport.rpst_v2()
+  end,
+  desc = "rpst-v2 ファイル保存時に自動転送",
+})
+
+-- =============================================================================
 -- PHP用のインデント設定
+-- =============================================================================
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "php",
   callback = function()
