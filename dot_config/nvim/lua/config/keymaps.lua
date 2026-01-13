@@ -13,3 +13,4 @@ vim.keymap.set("n", "<leader>tr", phpunit.run_remote, { desc = "RPST PHPUnit (Re
 -- =============================================================================
 local transport = require("utils.transport")
 vim.keymap.set("n", "<leader>rt", transport.rpst_v2, { desc = "Transfer to Remote (rpst-v2)" })
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without yanking (greatest keymap)" })
