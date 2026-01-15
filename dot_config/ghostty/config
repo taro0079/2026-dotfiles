@@ -1,5 +1,5 @@
 font-family = "Maple Mono NF"
-font-size = 13
+font-size = 12
 font-thicken=true
 font-feature=calt, liga, lig
 theme = tokyonight
