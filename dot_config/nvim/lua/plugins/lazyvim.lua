@@ -3,6 +3,24 @@ return {
     transparent_mode = true,
   } },
   {
+    "loctvl842/monokai-pro.nvim",
+    config = function()
+      require("monokai-pro").setup({
+
+        transparent_background = true,
+        background_clear = {
+          "float_win",
+          "toggleterm",
+          "telescope",
+          "which-key",
+          "neo-tree",
+          "notify",
+          "bufferline",
+        },
+      })
+    end,
+  },
+  {
     "rose-pine/neovim",
     config = function()
       require("rose-pine").setup({
@@ -17,7 +35,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "rose-pine",
+      colorscheme = "monokai-pro",
     },
   },
 }
