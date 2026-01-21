@@ -16,6 +16,13 @@ return {
           stdin = false,
           tmpfile_format = "$FILENAME",
         },
+        yamlfmt = {
+          prepend_args = { "-i", "4" },
+        },
+      },
+      formatters_by_ft = {
+        yaml = { "yamlfmt" },
+        yml = { "yamlfmt" },
       },
     },
   },
