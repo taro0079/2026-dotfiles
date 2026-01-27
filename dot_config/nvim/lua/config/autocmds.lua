@@ -44,3 +44,16 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.smartindent = true
   end,
 })
+
+-- =============================================================================
+-- YAML用のインデント設定
+-- =============================================================================
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "yaml", "yml" },
+  callback = function()
+    vim.opt_local.expandtab = true
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
