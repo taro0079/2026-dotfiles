@@ -4,3 +4,4 @@
 
 -- PHP: phpactorの代わりにintelephenseを使用
 vim.g.lazyvim_php_lsp = "intelephense"
+vim.opt.clipboard = "unnamedplus"
