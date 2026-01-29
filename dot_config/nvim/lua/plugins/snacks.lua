@@ -1,7 +1,7 @@
 return {
   "folke/snacks.nvim",
   opts = {
-    scroll = { enable = false },
+    scroll = { enabled = false },
   },
   keys = {
     { "<Space><Space>", false },

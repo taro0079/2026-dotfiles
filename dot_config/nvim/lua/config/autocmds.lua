@@ -25,6 +25,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   end,
   desc = "rpst-v2 ファイル保存時に自動転送",
 })
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*/rpst-api/*",
+  callback = function()
+    transport.rpst_api()
+  end,
+  desc = "rpst-api ファイル保存時に自動転送",
+})
 
 -- =============================================================================
 -- PHP用のインデント設定

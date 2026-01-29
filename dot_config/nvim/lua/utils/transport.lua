@@ -10,12 +10,8 @@ function M.to_remote(local_path, remote_path)
     local relative_path = file_path:sub(#vim.fn.expand(local_path) + 1)
 
     -- rsync コマンドを非同期で実行
-    local cmd = string.format(
-      "rsync -aqz --no-motd --mkpath -e 'ssh -q' %s %s%s",
-      file_path,
-      remote_path,
-      relative_path
-    )
+    local cmd =
+      string.format("rsync -aqz --no-motd --mkpath -e 'ssh -q' %s %s%s", file_path, remote_path, relative_path)
     vim.fn.jobstart(cmd, {
       stdout_buffered = true,
       on_stdout = function(_, data)
@@ -48,11 +44,20 @@ function M.rpst_v2()
   M.to_remote(local_project_path, remote_project_path)
 end
 
+function M.rpst_api()
+  local local_project_path = "~/ghq/rpst-api/"
+  local remote_project_path = "taro_morita@rpst-api:/var/lib/rpst-api-docker/"
+  M.to_remote(local_project_path, remote_project_path)
+end
+
 -- コマンドを登録
 function M.setup()
   vim.api.nvim_create_user_command("TransportV2", function()
     M.rpst_v2()
   end, { desc = "rpst-v2 のファイルをリモートに転送" })
+  vim.api.nvim_create_user_command("TransportRpstApi", function()
+    M.rpst_api()
+  end, { desc = "rpst-api のファイルをリモートに転送" })
 end
 
 return M
