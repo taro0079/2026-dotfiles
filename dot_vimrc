@@ -59,36 +59,16 @@ call plug#begin()
 Plug 'taro0079/path_to_clipboard'
 Plug 'vim-denops/denops.vim'
 Plug 'ojroques/vim-oscyank'
-Plug 'Shougo/ddc.vim'
-Plug 'Shougo/ddc-ui-native'
-Plug 'Shougo/ddc-source-around'
-Plug 'matsui54/ddc-matcher_fuzzy'
-Plug 'Shougo/ddc-filter-matcher_head'
-Plug 'Shougo/ddc-filter-sorter_rank'
-Plug 'Shougo/ddu.vim'
-Plug 'Shougo/ddc-source-lsp'
-Plug 'Shougo/ddu-ui-ff'
-Plug 'Shougo/ddu-kind-file'
-Plug 'Shougo/ddu-source-file'
 Plug 'wolverian/minimal',
-Plug 'Shougo/ddu-source-file_rec'
-Plug 'Shougo/ddu-source-register'
-Plug 'shun/ddu-source-rg'
-Plug 'Shougo/ddu-commands.vim'
-Plug 'uga-rosa/ddc-source-vsnip'
-Plug 'matsui54/ddu-source-file_external'
 Plug 'tpope/vim-dadbod'
-Plug 'shun/ddu-source-buffer'
-Plug 'Shougo/ddu-filter-matcher_substring'
-Plug 'Shougo/ddu-filter-matcher_relative'
-Plug 'yuki-yano/ddu-filter-fzf'
 Plug 'junegunn/vim-easy-align'
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-endwise'
-Plug 'shun/ddc-source-vim-lsp'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'  " ← これを追加
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
@@ -111,9 +91,17 @@ Plug 'vim-test/vim-test'
 Plug 'dense-analysis/ale'
 Plug 'lifepillar/vim-solarized8'
 Plug 'thinca/vim-quickrun'
-Plug 'hrsh7th/vim-vsnip'
+" Plug 'hrsh7th/vim-vsnip'
+" Plug 'hrsh7th/vim-vsnip-integ'
+if has('python3')
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
+    Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+endif
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'aerosol/dumbotron.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " ESKK setting ------------------------------- {{{1
@@ -126,129 +114,11 @@ imap <C-j> <Plug>(eskk:toggle)
 syntax enable
 filetype plugin on
 set termguicolors
-" set background=light
-" let g:tokyonight_enable_italic = 1
-" let g:tokyonight_transparent_background = 1
-colorscheme default
+colorscheme industry
 
-" fold settings ---------------------- {{{1
-" set foldmethod=manual
-"augroup filetype_vim
-"  set foldmethod=manual
-"  autocmd!
-"  autocmd FileType vim setlocal foldmethod=marker
-"augroup END
 
 " list settings ---------------------- {{{1
 nnoremap <leader>lt :set list!<CR>
-
-" ddc setings ---------------------- {{{1
-call ddc#custom#patch_global('ui', 'native')
-call ddc#custom#patch_global('sources', ['vim-lsp', 'around', 'vsnip'])
-call ddc#custom#patch_global('sourceOptions', {
-      \ '_': {
-      \    'matchers': ['matcher_fuzzy'],
-      \    'sorters': ['sorter_rank'],
-      \    'minAutoCompleteLength': 1,
-      \    'ignoreCase': 'true'
-      \  },
-      \ 'around': {
-      \   'mark': 'around',
-      \ },
-      \ 'vim-lsp': {
-      \    'mark': 'lsp',
-      \    'forceCompletionPattern': '\.\w*|->\w*|\$\w*'
-      \ },
-      \ 'vsnip': {
-      \   'mark': 'vsnip'
-      \ },
-      \})
-call ddc#enable()
-
-" inoremap <expr> <TAB>
-"     \ pumvisible() ? '<C-n>' :
-"     \ (col('.')) <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
-"     \ '<TAB>' : ddc#map#manual_complete()
-" inoremap <expr> <C-k> pumvisible() > '<C-p>' : ''
-
-" ddu settings ---------------------- {{{1
-call ddu#custom#patch_global({
-      \  'ui': 'ff',
-      \  'sources': [{'name':'register'},
-      \    {
-      \      'name': 'file_rec',
-      \      'params': {},
-      \    }],
-      \  'sourceParams': {
-      \    'file_rec': {
-      \        'ignoredDirectories': ['.git', 'node_modules', 'vendor', '.next']
-      \    },
-      \    'rg': {
-      \       'args': ['--column', '--no-heading', '--color', 'never']
-      \    },
-      \  },
-      \  'sourceOptions': {
-      \    '_': {
-      \      'matchers': ["matcher_substring"],
-      \      'ignoreCase': 'true',
-      \    },
-      \  },
-      \  'filterParams': {
-      \    'matcher_substring': {
-      \      'highlightMatched': 'Title'
-      \    }
-      \  },
-      \  'kindOptions': {
-      \    'file_rec': {
-      \      'defaultAction': 'open',
-      \    },
-      \    'file_external': {
-      \      'defaultAction': 'open',
-      \    }
-      \  }
-      \})
-" git log --first-parent $(git branch --contains | cut -d " " -f 2) --pretty=format: --name-only --diff-filter=A | sort -u
-
-call ddu#custom#patch_local("git-files", {
-            \ "sources": ["file_external"],
-            \ "sourceParams": {
-            \     "file_external": {
-            \         "cmd": ["git", "ls-files"]
-            \     }
-            \  }
-            \})
-
-" ddu key setting
-autocmd FileType ddu-ff call s:ddu_my_settings()
-function! s:ddu_my_settings() abort
-    nnoremap <buffer><silent> <CR> <Cmd>call ddu#ui#do_action('itemAction',
-                \ {'name': 'open', 'params':{}})<CR>
-  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#do_action('toggleSelectItem')<CR>
-  nnoremap <buffer><silent> i <Cmd>call ddu#ui#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> q <Cmd>call ddu#ui#do_action('quit')<CR>
-endfunction
-
-autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
-function! s:ddu_filter_my_settings() abort
-  nnoremap <buffer> <CR> <Cmd>call ddu#ui#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> q <Cmd>call ddu#ui#do_action('quit')<CR>
-  inoremap <buffer> <CR> <Cmd>call ddu#ui#do_action('itemAction')<CR>
-  inoremap <buffer> <C-n> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')+1,0)")<CR>
-  inoremap <buffer> <C-p> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
-endfunction
-
-" ddu keymapping
-nnoremap <SID>[ug] <Nop>
-nmap ,u <SID>[ug]
-
-nnoremap <silent> <SID>[ug]m :<C-u>Ddu mr<CR>
-nnoremap <silent> <SID>[ug]b :<C-u>Ddu buffer<CR>
-nnoremap <silent> <SID>[ug]r :<C-u>Ddu register<CR>
-nnoremap <silent> <SID>[ug]n :<C-u>Ddu file -source-param-new -source-option-volatile<CR>
-nnoremap <silent> <SID>[ug]f :<C-u>Ddu file_rec<CR>
-nnoremap <silent> <SID>[ug]p <Cmd>call ddu#start({
-            \  'name': 'git-files',
-            \ })<CR>
 
 " phpファイルの保存時にphp-cs-fixerを適用する
 function! s:php_fixer() abort
@@ -263,12 +133,18 @@ endfunction
 " augroup END
 
 " lsp settings --- {{{1
-
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
 " vim lsp settings --- {{{1
+
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+
+    setlocal completeopt=menu,menuone,noinsert,noselect
     nmap <buffer> gd <plug>(lsp-definition)
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
@@ -290,7 +166,6 @@ augroup lsp_install
     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
-
 " set list
 " set listchars=tab:»-,trail:-,eol:¿,extends:»,precedes:«,nbsp:%
 " vim color scheme settings --- {{{1
@@ -310,7 +185,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " phpactor setting
-autocmd FileType php setlocal omnifunc=phpactor#Complete
+" autocmd FileType php setlocal omnifunc=phpactor#Complete
 " useの補完
 nmap <silent><Leader>u      :<C-u>call phpactor#UseAdd()<CR>
 " コンテキストメニューの起動(カーソル下のクラスやメンバに対して実行可能な選択肢を表示してくれます)
@@ -337,26 +212,41 @@ vmap <silent><Leader>hh     :<C-u>call phpactor#Hover()<CR>
 
 " vim-vsnip -- {{1
 " Expand
-imap <expr> <C-d>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-d>'
-smap <expr> <C-d>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-d>'
+" imap <expr> <C-d>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-d>'
+" smap <expr> <C-d>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-d>'
 
 " Expand or jump
-imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+" imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+" smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
-" Jump forward or backward
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+" " Jump forward or backward
+" imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+" smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+" imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+" smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 " Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
 " See https://github.com/hrsh7th/vim-vsnip/pull/50
-nmap        s   <Plug>(vsnip-select-text)
-xmap        s   <Plug>(vsnip-select-text)
-nmap        X   <Plug>(vsnip-cut-text)
-xmap        X   <Plug>(vsnip-cut-text)
+" nmap        s   <Plug>(vsnip-select-text)
+" xmap        s   <Plug>(vsnip-select-text)
+" nmap        X   <Plug>(vsnip-cut-text)
+" xmap        X   <Plug>(vsnip-cut-text)
 
+" ultisnips config --- {{1
+if has('python3')
+  let g:UltiSnipsExpandTrigger="<c-e>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+        \ 'name': 'ultisnips',
+        \ 'allowlist': ['*'],
+        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+        \ }))
+  let g:ultisnips_php_scalar_types = 1
+endif
+
+
+" quickrun config --- {{1
 nmap <leader>q :QuickRun<cr>
 
 " asynccomplete settings --- {{1
@@ -377,11 +267,11 @@ let g:netrw_liststyle    = 3
 
 " lsp settings ---------------------------- {{{1
 
-"augroup lsp_install
-"    au!
-"    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-"augroup END
-" command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+ command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
 
 " my functions
 "
@@ -403,20 +293,6 @@ function! GetRegionText()
 endfunction
 
 " rpst-symfonyのクラス郡を生成するコマンド
-function! OmsGenerator()
-    let current_file_path =  expand('%')
-    let output = system(printf("ruby ~/dev/oms-create-rb/test.rb %s", current_file_path))
-    let lines =  split(output, '\n')
-    " 最初にバッファの全ての行を削除しておく
-    execute '%delete _'
-    let current_line = 0
-    for line in lines
-        call append(current_line, line)
-        let current_line += 1
-    endfor
-    " call setline(1, output)
-endfunction
-command! OmsForever call OmsGenerator()
 
 " コミットログからチケット番号を自動抽出してくれるコマンド v1
 function! ExtractTicketNumbers()
@@ -440,19 +316,6 @@ endfunction
 
 command! TicketExtract call ExtractTicketNumbers()
 
-function! ReleaseWithN()
-    let tickets = join(ExtractTicketNumbers(), ',')
-    let command_path = expand('~/dev/make_slack_post/make_slack_post.php')
-    let command = printf('php %s %s', command_path, tickets)
-    call ExternalCommandOutputToBuffer(command)
-endfunction
-
-function! IloveReleaseCommand()
-    let pr_number = input("What is target PR number ? > ")
-    let command_path = expand('~/dev/make_slack_post/fetch_pr.rb')
-    let command = printf('ruby %s %s', command_path, pr_number)
-    call ExternalCommandOutputToBuffer(command)
-endfunction
 
 function ExternalCommandOutputToBuffer(command)
     let output = system(a:command)
@@ -535,12 +398,24 @@ command! PhpUnitRunner call PhpUnitRunner()
 " set regexpengine=1
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-"let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-"let g:ale_sign_error = '✘'
-"let g:ale_sign_warning = '⚠'
-"let g:ale_lint_on_text_changed = 'never'
-"let g:ale_fix_on_save = 1
-"let g:ale_fixers = {'php': ['php_cs_fixer']}
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {'php': ['php_cs_fixer']}
+let g:ale_linters = {
+      \ 'php': ['phpstan'],
+\}
+let g:ale_php_phpstan_executable = 'phpstan'
+let g:ale_php_phpstan_level=9
+" let g:ale_php_phpstan_configuration = ".phpstan.neon"
+let g:ale_lint_use_temporary_files = 0
+
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
 
 "" php actor
 " 画面を分割して定義元へのジャンプ
@@ -565,5 +440,255 @@ let test#php#phpunit#executable = 'docker compose -f ../docker-compose.yml run
 " augroup RpstV2SettingOfApi
 "     autocmd!
 "     autocmd BufEnter /var/lib/rpst-api-docker/rpst-v2/* set local path+=app/*,cert/*,ci/*,data/*,html/*,tests/*,frontend/*,ftproot/*
-" augroup END
+" リモートサーバーへのファイル転送ユーティリティ
+
+" 汎用的なリモート転送関数
+function! s:ToRemote(local_path, remote_path) abort
+    let file_path = expand('%:p')
+    let local_expanded = expand(a:local_path)
+    
+    " ファイルがプロジェクトディレクトリ内にあるか確認
+    if file_path =~# '^' . escape(local_expanded, '/')
+        echo 'File is inside the project directory'
+        
+        " 相対パスを取得
+        let relative_path = substitute(file_path, '^' . escape(local_expanded, '/'), '', '')
+        
+        " rsync コマンドを構築
+        let cmd = printf("rsync -aqz --no-motd --mkpath -e 'ssh -q' %s %s%s",
+                    \ shellescape(file_path),
+                    \ a:remote_path,
+                    \ relative_path)
+        
+        " 非同期でコマンドを実行
+        let job = job_start([&shell, &shellcmdflag, cmd], {
+                    \ 'out_cb': function('s:OnStdout'),
+                    \ 'err_cb': function('s:OnStderr'),
+                    \ 'exit_cb': function('s:OnExit')
+                    \ })
+    else
+        echo 'File is not inside the project directory'
+    endif
+endfunction
+
+" 標準出力のコールバック
+function! s:OnStdout(channel, msg) abort
+    let msg = trim(a:msg)
+    if msg !=# ''
+        echo 'Message: ' . msg
+    endif
+endfunction
+
+" 標準エラー出力のコールバック
+function! s:OnStderr(channel, msg) abort
+    let err = trim(a:msg)
+    if err !=# ''
+        echohl ErrorMsg
+        echo 'Rsync Error: ' . err
+        echohl None
+    endif
+endfunction
+
+" 終了時のコールバック
+function! s:OnExit(job, code) abort
+    if a:code == 0
+        echohl MoreMsg
+        echo 'File transferred successfully'
+        echohl None
+    else
+        echohl ErrorMsg
+        echo 'Error: ' . a:code
+        echohl None
+    endif
+endfunction
+
+" rpst-v2 プロジェクト用の転送
+function! RpstV2Transport() abort
+    let local_project_path = '~/ghq/rpst-v2/'
+    let remote_project_path = 'taro_morita@rpst-api:/var/lib/nfs-devel7-volume/dev-tmorita-rpst/var_www/rpst-v2/dev/'
+    call s:ToRemote(local_project_path, remote_project_path)
+endfunction
+
+" rpst-api プロジェクト用の転送
+function! RpstApiTransport() abort
+    let local_project_path = '~/ghq/rpst-api/'
+    let remote_project_path = 'taro_morita@rpst-api:/var/lib/rpst-api-docker/'
+    call s:ToRemote(local_project_path, remote_project_path)
+endfunction
+
+" コマンドを登録
+command! TransportV2 call RpstV2Transport()
+command! TransportRpstApi call RpstApiTransport()
+" リモートでPHPUnitを実行するユーティリティ
+
+" デフォルト設定
+let s:default_config = {
+    \ 'remote_host': 'dev-tmorita',
+    \ 'user': 'taro_morita',
+    \ 'base_path': '/var/www/rpst-v2/dev',
+    \ 'phpunit_config': '/var/www/rpst-v2/dev/tests/app/phpunit/v9/phpunit.xml.dist',
+    \ 'local_base_path': '~/ghq/rpst-v2/'
+    \ }
+
+" 設定を取得
+function! s:get_config() abort
+    return exists('g:rpst_phpunit_config')
+                \ ? g:rpst_phpunit_config
+                \ : s:default_config
+endfunction
+
+" ローカルパスからリモートパスへの相対パスを取得
+function! s:get_relative_path(local_base) abort
+    let file_path = expand('%:p')
+    let local_base_expanded = expand(a:local_base)
+
+    " パスがプロジェクト内にあるか確認
+    if file_path !~# '^' . escape(local_base_expanded, '/')
+        echohl ErrorMsg
+        echo 'File is not in the project directory: ' . a:local_base
+        echohl None
+        return ''
+    endif
+
+    " 相対パスを取得
+    let relative_path = substitute(file_path, '^' . escape(local_base_expanded, '/'), '', '')
+    " 先頭のスラッシュを削除
+    let relative_path = substitute(relative_path, '^/', '', '')
+
+    return relative_path
+endfunction
+
+" リモートでPHPUnitを実行
+function! RpstPhpunitRun(...) abort
+    let cfg = s:get_config()
+
+    " ローカルのプロジェクトベースパスから相対パスを取得
+    let relative_path = s:get_relative_path(cfg.local_base_path)
+    if empty(relative_path)
+        return
+    endif
+
+    " リモートの完全パスを構築
+    let test_target_path = printf('%s/%s', cfg.base_path, relative_path)
+
+    " PHPUnitコマンドを構築
+    let phpunit_cmd = printf('php %s/vendor/bin/phpunit -c %s %s',
+                \ cfg.base_path,
+                \ cfg.phpunit_config,
+                \ test_target_path)
+
+    " SSHコマンド全体を構築
+    let full_cmd = printf("ssh %s@%s '%s'",
+                \ cfg.user,
+                \ cfg.remote_host,
+                \ phpunit_cmd)
+
+    " デバッグ情報を表示
+    echo '=== Debug Information ==='
+    echo 'Local file: ' . expand('%:p')
+    echo 'Relative path: ' . relative_path
+    echo 'Remote target: ' . test_target_path
+    echo 'PHPUnit command: ' . phpunit_cmd
+    echo 'Full SSH command: ' . full_cmd
+    echo '========================='
+
+    " messagesに保存
+    echom '=== RpstPhpunit Command ==='
+    echom full_cmd
+
+    " 縦分割してターミナルで実行
+    vsplit
+    execute 'terminal ++shell ' . full_cmd
+endfunction
+
+" コマンドを表示するだけ（実行しない）
+function! RpstPhpunitShowCommand() abort
+    let cfg = s:get_config()
+
+    let relative_path = s:get_relative_path(cfg.local_base_path)
+    if empty(relative_path)
+        return
+    endif
+
+    let test_target_path = printf('%s/%s', cfg.base_path, relative_path)
+    let phpunit_cmd = printf('php %s/vendor/bin/phpunit -c %s %s',
+                \ cfg.base_path,
+                \ cfg.phpunit_config,
+                \ test_target_path)
+    let full_cmd = printf("ssh %s@%s '%s'",
+                \ cfg.user,
+                \ cfg.remote_host,
+                \ phpunit_cmd)
+
+    " コマンドをクリップボードにコピー
+    let @+ = full_cmd
+    let @" = full_cmd
+
+    echo '=== Generated Command ==='
+    echo full_cmd
+    echo ''
+    echo 'Command copied to clipboard and default register'
+    echo 'You can paste it with: p (in normal mode) or Ctrl+V (in terminal)'
+endfunction
+
+" リモートでファイルが存在するか確認
+function! RpstPhpunitCheck() abort
+    let cfg = s:get_config()
+
+    let relative_path = s:get_relative_path(cfg.local_base_path)
+    if empty(relative_path)
+        return
+    endif
+
+    let test_target_path = printf('%s/%s', cfg.base_path, relative_path)
+
+    " ファイル存在確認コマンド
+    let check_cmd = printf("ssh %s@%s 'test -f %s && echo EXISTS || echo NOT_FOUND'",
+                \ cfg.user,
+                \ cfg.remote_host,
+                \ shellescape(test_target_path))
+
+    echo 'Checking: ' . test_target_path
+    let result = system(check_cmd)
+    echo 'Result: ' . result
+
+    if result =~# 'EXISTS'
+        echohl MoreMsg
+        echo 'File exists on remote server!'
+        echohl None
+    else
+        echohl ErrorMsg
+        echo 'File NOT FOUND on remote server!'
+        echohl None
+
+        " ファイル名で検索
+        echo 'Searching for file...'
+        let filename = expand('%:t')
+        let find_cmd = printf("ssh %s@%s 'find %s -name %s'",
+                    \ cfg.user,
+                    \ cfg.remote_host,
+                    \ cfg.base_path,
+                    \ shellescape(filename))
+        let found = system(find_cmd)
+        if !empty(found)
+            echo 'Found at:'
+            echo found
+        endif
+    endif
+endfunction
+
+" コマンドを登録
+command! RpstPhpunit call RpstPhpunitRun()
+command! RpstPhpunitShow call RpstPhpunitShowCommand()
+command! RpstPhpunitCheck call RpstPhpunitCheck()
+
+" ログを表示
+command! RpstPhpunitLog messages
+
+" fzf config --- {{1
+let g:fzf_vim = {}
+let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']
+nnoremap <silent> <c-p>p :GFiles<CR>
+nnoremap <silent> <c-p>f :Files<CR>
+nnoremap <silent> <c-p>b :Buffers<CR>
 
