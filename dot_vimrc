@@ -691,4 +691,3 @@ let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']
 nnoremap <silent> <c-p>p :GFiles<CR>
 nnoremap <silent> <c-p>f :Files<CR>
 nnoremap <silent> <c-p>b :Buffers<CR>
-
