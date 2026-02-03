@@ -69,9 +69,10 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'  " ← これを追加
+Plug 'mattn/vim-starwars'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'vim-skk/eskk.vim'
 Plug 'sheerun/vim-polyglot'
@@ -85,12 +86,13 @@ Plug 'kana/vim-textobj-user'
 Plug 'osyo-manga/vim-textobj-blockwise'
 Plug 'dracula/vim'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'easymotion/vim-easymotion'
 Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 Plug 'vim-test/vim-test'
 Plug 'dense-analysis/ale'
 Plug 'lifepillar/vim-solarized8'
 Plug 'thinca/vim-quickrun'
+Plug 'easymotion/vim-easymotion'
+Plug 'morhetz/gruvbox'
 " Plug 'hrsh7th/vim-vsnip'
 " Plug 'hrsh7th/vim-vsnip-integ'
 if has('python3')
@@ -102,6 +104,7 @@ Plug 'ghifarit53/tokyonight-vim'
 Plug 'aerosol/dumbotron.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'justinmk/vim-sneak'
 call plug#end()
 
 " ESKK setting ------------------------------- {{{1
@@ -113,12 +116,27 @@ imap <C-j> <Plug>(eskk:toggle)
 " Color settings ------------------------------- {{{1
 syntax enable
 filetype plugin on
+set background=dark
 set termguicolors
 colorscheme industry
 
 
 " list settings ---------------------- {{{1
 nnoremap <leader>lt :set list!<CR>
+
+" ultisnips config --- {{1
+if has('python3')
+  let g:UltiSnipsSnippetDirectories = ['UltiSnips', "plugged/vim-snippets/UltiSnips"]
+  let g:UltiSnipsExpandTrigger="<c-e>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+        \ 'name': 'ultisnips',
+        \ 'allowlist': ['*'],
+        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+        \ }))
+  let g:ultisnips_php_scalar_types = 1
+endif
 
 " phpファイルの保存時にphp-cs-fixerを適用する
 function! s:php_fixer() abort
@@ -151,6 +169,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
     nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>ca <plug>(lsp-code-action)
     nmap <buffer> <leader>rn <plug>(lsp-rename)
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
@@ -232,18 +251,6 @@ vmap <silent><Leader>hh     :<C-u>call phpactor#Hover()<CR>
 " nmap        X   <Plug>(vsnip-cut-text)
 " xmap        X   <Plug>(vsnip-cut-text)
 
-" ultisnips config --- {{1
-if has('python3')
-  let g:UltiSnipsExpandTrigger="<c-e>"
-  let g:UltiSnipsJumpForwardTrigger="<c-b>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-        \ 'name': 'ultisnips',
-        \ 'allowlist': ['*'],
-        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-        \ }))
-  let g:ultisnips_php_scalar_types = 1
-endif
 
 
 " quickrun config --- {{1
@@ -404,7 +411,7 @@ let g:ale_sign_warning = '⚠'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_save = 1
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_fixers = {'php': ['php_cs_fixer']}
 let g:ale_linters = {
       \ 'php': ['phpstan'],
@@ -443,7 +450,7 @@ let test#php#phpunit#executable = 'docker compose -f ../docker-compose.yml run
 " リモートサーバーへのファイル転送ユーティリティ
 
 " 汎用的なリモート転送関数
-function! s:ToRemote(local_path, remote_path) abort
+function! s:ToRemote(local_path, remote_path, use_mkpath) abort
     let file_path = expand('%:p')
     let local_expanded = expand(a:local_path)
     
@@ -454,11 +461,19 @@ function! s:ToRemote(local_path, remote_path) abort
         " 相対パスを取得
         let relative_path = substitute(file_path, '^' . escape(local_expanded, '/'), '', '')
         
-        " rsync コマンドを構築
-        let cmd = printf("rsync -aqz --no-motd --mkpath -e 'ssh -q' %s %s%s",
-                    \ shellescape(file_path),
-                    \ a:remote_path,
-                    \ relative_path)
+        if a:use_mkpath
+            " rsync コマンドを構築
+            let cmd = printf("rsync -aqz --no-motd --mkpath -e 'ssh -q' %s %s%s",
+                      \ shellescape(file_path),
+                      \ a:remote_path,
+                      \ relative_path)
+        else
+            let cmd = printf("rsync -aqz --no-motd -e 'ssh -q' %s %s%s",
+                      \ shellescape(file_path),
+                      \ a:remote_path,
+                      \ relative_path)
+        endif
+
         
         " 非同期でコマンドを実行
         let job = job_start([&shell, &shellcmdflag, cmd], {
@@ -475,7 +490,7 @@ endfunction
 function! s:OnStdout(channel, msg) abort
     let msg = trim(a:msg)
     if msg !=# ''
-        echo 'Message: ' . msg
+        echom 'Message: ' . msg
     endif
 endfunction
 
@@ -484,7 +499,7 @@ function! s:OnStderr(channel, msg) abort
     let err = trim(a:msg)
     if err !=# ''
         echohl ErrorMsg
-        echo 'Rsync Error: ' . err
+        echom 'Rsync Error: ' . err
         echohl None
     endif
 endfunction
@@ -493,11 +508,11 @@ endfunction
 function! s:OnExit(job, code) abort
     if a:code == 0
         echohl MoreMsg
-        echo 'File transferred successfully'
+        echom 'File transferred successfully'
         echohl None
     else
         echohl ErrorMsg
-        echo 'Error: ' . a:code
+        echom 'Error: ' . a:code
         echohl None
     endif
 endfunction
@@ -506,20 +521,40 @@ endfunction
 function! RpstV2Transport() abort
     let local_project_path = '~/ghq/rpst-v2/'
     let remote_project_path = 'taro_morita@rpst-api:/var/lib/nfs-devel7-volume/dev-tmorita-rpst/var_www/rpst-v2/dev/'
-    call s:ToRemote(local_project_path, remote_project_path)
+    call s:ToRemote(local_project_path, remote_project_path, 0)
+endfunction
+"
+" rpst プロジェクト用の転送
+function! RpstTransport() abort
+    let local_project_path = '~/ghq/rpst/'
+    let remote_project_path = 'taro_morita@dev-tmorita:/var/www/precs/dev_tmorita/'
+    call s:ToRemote(local_project_path, remote_project_path, 0)
 endfunction
 
 " rpst-api プロジェクト用の転送
 function! RpstApiTransport() abort
     let local_project_path = '~/ghq/rpst-api/'
     let remote_project_path = 'taro_morita@rpst-api:/var/lib/rpst-api-docker/'
-    call s:ToRemote(local_project_path, remote_project_path)
+    call s:ToRemote(local_project_path, remote_project_path, 0)
 endfunction
 
 " コマンドを登録
 command! TransportV2 call RpstV2Transport()
 command! TransportRpstApi call RpstApiTransport()
+command! TransportRpst call RpstTransport()
 " リモートでPHPUnitを実行するユーティリティ
+
+augroup RpstV2AutoTransport
+    autocmd!
+    " ~/ghq/rpst-v2/ 配下のファイルが保存されたら実行する
+    autocmd BufWritePost ~/ghq/rpst-v2/* call RpstV2Transport()
+augroup END
+
+augroup RpstAutoTransport
+    autocmd!
+    " ~/ghq/rpst/ 配下のファイルが保存されたら実行する
+    autocmd BufWritePost ~/ghq/rpst/* call RpstTransport()
+augroup END
 
 " デフォルト設定
 let s:default_config = {
@@ -597,7 +632,6 @@ function! RpstPhpunitRun(...) abort
     echom full_cmd
 
     " 縦分割してターミナルで実行
-    vsplit
     execute 'terminal ++shell ' . full_cmd
 endfunction
 
@@ -688,6 +722,18 @@ command! RpstPhpunitLog messages
 " fzf config --- {{1
 let g:fzf_vim = {}
 let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']
-nnoremap <silent> <c-p>p :GFiles<CR>
-nnoremap <silent> <c-p>f :Files<CR>
-nnoremap <silent> <c-p>b :Buffers<CR>
+nnoremap <silent> <space>pg :GFiles<CR>
+nnoremap <silent> <space>pf :Files<CR>
+nnoremap <silent> <space>pb :Buffers<CR>
+nnoremap <silent> <space>pq :Rg<CR>
+
+" easymotion config --- {{{1
+map <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+
+" pair config --- {{{1
+inoremap (; (<CR>)<C-c>O<tab><Esc>zzi
+inoremap {; { <CR> }<C-c>O<tab><Esc>zzi
+inoremap {, { <CR> },<C-c>O<tab><Esc>zzi
+inoremap [; [ <CR> ]<C-c>O<tab><Esc>zzi
+inoremap [, [ <CR> ],<C-c>O<tab><Esc>zzi
