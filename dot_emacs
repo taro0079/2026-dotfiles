@@ -434,8 +434,16 @@
   :config
   (setq eglot-autoshutdown t)
   (setq-default eglot-workspace-configuration
-                '((:intelephense . (:files (:maxSize 5000000)))))
-  (add-to-list 'eglot-server-programs
+                '((:intelephense . (
+                                    :environment (:phpVersion "8.5.2")
+                                    :files (:maxSize 5000000
+                                                     :exclude ["**/.git/**"
+                                                               "**/node_modules/**"
+                                                               "**/vendor/**/test/**"
+                                                               "**/vendor/**/tests/**"
+                                                               ]
+                                                     )))))
+  (add-to-list e'glot-server-programs
                '((php-mode php-ts-mode) . ("intelephense" "--stdio")))
   (add-to-list 'eglot-server-programs
                '((python-mode) . ("pyright-langserver" "--stdio")))
@@ -445,7 +453,10 @@
                '((ruby-mode) . ("ruby-lsp"))))
 (with-eval-after-load 'eglot
   ;; Intelephenseのファイル監視要求を無視する（安定化のため）
-  (add-to-list 'eglot-ignored-server-capabilities :workspace/didChangeWatchedFiles))
+  (add-to-list 'eglot-ignored-server-capabilities :workspace/didChangeWatchedFiles)
+  (setq eglot-events-buffer-size 0)
+  (setq eglot-sync-connect 0)
+  )
 ;; (use-package eglot-booster
 ;;   :straight ( eglot-booster :type git :host nil :repo "https://github.com/jdtsmith/eglot-booster" )
 ;;   :ensure t

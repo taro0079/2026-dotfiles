@@ -61,9 +61,12 @@ Plug 'vim-denops/denops.vim'
 Plug 'ojroques/vim-oscyank'
 Plug 'wolverian/minimal',
 Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'kristijanhusak/vim-dadbod-completion' "Optional
 Plug 'junegunn/vim-easy-align'
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'tpope/vim-repeat'
+Plug 'diepm/vim-rest-console'
 Plug 'tpope/vim-endwise'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
@@ -737,3 +740,9 @@ inoremap {; { <CR> }<C-c>O<tab><Esc>zzi
 inoremap {, { <CR> },<C-c>O<tab><Esc>zzi
 inoremap [; [ <CR> ]<C-c>O<tab><Esc>zzi
 inoremap [, [ <CR> ],<C-c>O<tab><Esc>zzi
+
+" dadbod config --- {{{1
+nmap <space>db :DBUI<CR>
+let g:db_ui_save_location = '~/.vim/dadbod-ui'
+
+autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
