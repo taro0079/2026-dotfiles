@@ -64,6 +64,7 @@ Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'kristijanhusak/vim-dadbod-completion' "Optional
 Plug 'junegunn/vim-easy-align'
+Plug 'yami-beta/asyncomplete-omni.vim'
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'tpope/vim-repeat'
 Plug 'diepm/vim-rest-console'
@@ -736,13 +737,26 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 
 " pair config --- {{{1
 inoremap (; (<CR>)<C-c>O<tab><Esc>zzi
-inoremap {; { <CR> }<C-c>O<tab><Esc>zzi
 inoremap {, { <CR> },<C-c>O<tab><Esc>zzi
+inoremap {; { <CR> }<C-c>O<tab><Esc>zzi
 inoremap [; [ <CR> ]<C-c>O<tab><Esc>zzi
 inoremap [, [ <CR> ],<C-c>O<tab><Esc>zzi
+
+" move config --- {{{1
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
 
 " dadbod config --- {{{1
 nmap <space>db :DBUI<CR>
 let g:db_ui_save_location = '~/.vim/dadbod-ui'
-
 autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+\ 'name': 'omni',
+\ 'allowlist': ['*'],
+\ 'blocklist': ['c', 'cpp', 'html'],
+\ 'completor': function('asyncomplete#sources#omni#completor'),
+\ 'config': {
+\ },
+\ }))
+
+" autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
