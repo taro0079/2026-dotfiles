@@ -4,7 +4,7 @@ return {
 	config = function()
 		require("conform").setup({
 			format_on_save = {
-				timeout_ms = 5000,
+				timeout_ms = 500,
                 lsp_format = "fallback",
 			},
 			formatters_by_ft = {
@@ -15,6 +15,7 @@ return {
 				javascript = { "prettier" },
 				typescript = { "prettier" },
 				elixir = { "mix" },
+                php = { "php_cs_fixer" }
 			},
 			formatters = {
 				["clang-format"] = {
@@ -26,5 +27,6 @@ return {
 		vim.keymap.set("n", "<leader>f", function()
 			require("conform").format({ bufnr = 0 })
 		end)
+
 	end,
 }

@@ -1,9 +1,13 @@
 function ColorMyPencils(color)
 	color = color or "rose-pine-moon"
+	-- color = color or "kurodake-green"
 	vim.cmd.colorscheme(color)
 
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	-- kurodake-green uses its own background, don't override it
+	if color ~= "kurodake-green" then
+		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	end
 end
 
 return {
@@ -51,7 +55,7 @@ return {
 				},
 			})
 
-			ColorMyPencils();
+			ColorMyPencils("kurodake-green");
 		end
 	}
 

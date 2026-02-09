@@ -1,3 +1,5 @@
 require("remap")
 require("options")
 require("lazy_init")
+require("awesometaro")
+require("kurodake-green")
