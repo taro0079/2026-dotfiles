@@ -5,17 +5,18 @@ return {
 		require("conform").setup({
 			format_on_save = {
 				timeout_ms = 500,
-                lsp_format = "fallback",
+				lsp_format = "fallback",
 			},
 			formatters_by_ft = {
 				c = { "clang-format" },
 				cpp = { "clang-format" },
 				lua = { "stylua" },
 				go = { "gofmt" },
+				python = { "ruff_fix", "ruff_format" },
 				javascript = { "prettier" },
 				typescript = { "prettier" },
 				elixir = { "mix" },
-                php = { "php_cs_fixer" }
+				php = { "php_cs_fixer" },
 			},
 			formatters = {
 				["clang-format"] = {
@@ -27,6 +28,5 @@ return {
 		vim.keymap.set("n", "<leader>f", function()
 			require("conform").format({ bufnr = 0 })
 		end)
-
 	end,
 }

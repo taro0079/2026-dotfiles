@@ -1,5 +1,7 @@
 require("remap")
 require("options")
+require("transport_rpst")
 require("lazy_init")
 require("awesometaro")
+require("toggle_term")
 require("kurodake-green")
