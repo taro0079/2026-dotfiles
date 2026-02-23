@@ -63,11 +63,10 @@
   )
 
 
-;; lsp (lsp-bridge) setting
 (use-package posframe :straight t)
 (use-package yasnippet :straight t :config (yas-global-mode 1))
 (use-package yasnippet-snippets :straight t :after yasnippet)
-(use-package markdown-mode :straight t)
+;; (use-package markdown-mode :straight t)
 ;; ~/.emacs.d/straight/repos/lsp-bridge/python-lsp-bridgeにシンボリックリンクを貼らないと動作しない。
 ;; 以下のコマンドを実行する。
 ;; ln -s ~/.emacs.d/straight/repos/lsp-bridge/python-lsp-bridge ~/.local/bin/python-lsp-bridge
@@ -319,7 +318,7 @@
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
   (add-hook 'completion-at-point-functions #'yasnippet-capf)
-  (add-hook 'completion-at-point-functions #'eglot-completion-at-point))
+  )
 
 (use-package corfu
   :ensure t
@@ -414,101 +413,65 @@
     corfu-auto-delay 0.2
     corfu-auto-trigger "."
     corfu-quit-no-match 'separator)
-
+; for php config
 (use-package php-mode
   :ensure t
   :mode "\\.php\\'")
-
-(use-package eglot
-  :ensure nil
+(use-package phpactor
+  :straight (phpactor
+             :host github
+             :type git
+             :repo "emacs-php/phpactor.el"
+             :files ("*.el"))
+  ;; php-mode か php-ts-mode のどちらかが読み込まれたら即座にロードする
+  :after (:any php-mode php-ts-mode)
+  :bind (:map php-mode-map
+              ("C-c j" . phpactor-goto-definition)
+              ("C-c i" . phpactor-import-class)
+              ("C-c m" . phpactor-context-menu)
+         :map php-ts-mode-map
+              ("C-c j" . phpactor-goto-definition)
+              ("C-c i" . phpactor-import-class)
+              ("C-c m" . phpactor-context-menu))
   :hook
-  ((python-mode . eglot-ensure)
-   (ruby-mode . eglot-ensure)
-   (typescript-ts-mode . eglot-ensure)
-   (php-mode . eglot-ensure))
+  ;; :after でロードされた時点でフックを登録し、capf を先頭に挿入する
+  (php-mode . my/phpactor-mode-setup)
+  (php-ts-mode . my/phpactor-mode-setup)
+  :init
+  (defun my/phpactor-mode-setup ()
+    "PHPバッファ専用の補完設定"
+    ;; 他の global な Capf よりも優先的に phpactor を使うよう先頭に挿入
+    (setq-local completion-at-point-functions
+                (cons #'phpactor-complete-at-point completion-at-point-functions)))
   :config
-  (setq eglot-autoshutdown t)
-  :bind (:map eglot-mode-map
-          ("C-c a" . eglot-code-actions)
-          ("C-c r" . eglot-rename))
-  :config
-  (setq eglot-autoshutdown t)
-  (setq-default eglot-workspace-configuration
-                '((:intelephense . (
-                                    :environment (:phpVersion "8.5.2")
-                                    :files (:maxSize 5000000
-                                                     :exclude ["**/.git/**"
-                                                               "**/node_modules/**"
-                                                               "**/vendor/**/test/**"
-                                                               "**/vendor/**/tests/**"
-                                                               ]
-                                                     )))))
-  (add-to-list e'glot-server-programs
-               '((php-mode php-ts-mode) . ("intelephense" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '((python-mode) . ("pyright-langserver" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '((typescript-ts-mode tsx-ts-mode typescript-mode) . ("typescript-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs
-               '((ruby-mode) . ("ruby-lsp"))))
-(with-eval-after-load 'eglot
-  ;; Intelephenseのファイル監視要求を無視する（安定化のため）
-  (add-to-list 'eglot-ignored-server-capabilities :workspace/didChangeWatchedFiles)
-  (setq eglot-events-buffer-size 0)
-  (setq eglot-sync-connect 0)
-  )
-;; (use-package eglot-booster
-;;   :straight ( eglot-booster :type git :host nil :repo "https://github.com/jdtsmith/eglot-booster" )
-;;   :ensure t
-;;   :after eglot
+  ;; phpactorの実行ファイルのパスを明示的に指定してください（重要）
+  ;; terminalで `which phpactor` を実行して出たパスをここに書きます
+  ;; (setq phpactor-executable (expand-file-name "~/.composer/vendor/bin/phpactor"))
 
-  ;; :config
-  ;; (eglot-booster-mode)
-  ;; :init
-  ;; (defun my/eglot-booster-maybe-enable ()
-  ;;   "Enable eglot except for python"
-  ;;   (unless (derived-mode-p 'python-mode)
-  ;;     (eglot-booster-mode 1)))
-  ;; :hook (eglot-managed-mode . my/eglot-booster-maybe-enable)
-  ;; )
+  ;; 既に開いているPHPバッファがあればセットアップを適用する
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (or (derived-mode-p 'php-mode) (derived-mode-p 'php-ts-mode))
+        (my/phpactor-mode-setup)))))
 
-;; (use-package eglot-x
-;;   :ensure t
-;;   :vc (:url "https://github.com/nemethf/eglot-x" :rev :newest)
-
-;;   :after eglot
-;;   :config
-;;   (eglot-x-setup))
 
 (use-package inheritenv
   :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
-
-(use-package eat :ensure t)
-(straight-use-package
- '(monet :type git :host github :repo "stevemolitor/monet"))
-
-(use-package vterm :ensure t)
-(use-package claude-code-ide
-  :straight (:type git :host github :repo "manzaltu/claude-code-ide.el")
-  :bind ("C-c C-'" . claude-code-ide-menu)
-  :config
-  (claude-code-ide-emacs-tools-setup))
-
-(use-package copilot
-  :vc (:url "https://github.com/copilot-emacs/copilot.el"
-        :rev :newest
-        :branch "main")
-  :hook
-  ((prog-mode . copilot-mode)
-   (text-mode . copilot-mode))
-  :bind
-  (:map copilot-completion-map
-    ("C-TAB" . copilot-accept-completion)
-    ("C-<tab>" . copilot-accept-completion)
-    ("C-c \\" . copilot-clear-overlay))
-  :config
-  (setq copilot-idle-delay 0.2)
-  (setq copilot-max-char 10000))
+;; (use-package copilot
+;;   :vc (:url "https://github.com/copilot-emacs/copilot.el"
+;;         :rev :newest
+;;         :branch "main")
+;;   :hook
+;;   ((prog-mode . copilot-mode)
+;;    (text-mode . copilot-mode))
+;;   :bind
+;;   (:map copilot-completion-map
+;;     ("C-TAB" . copilot-accept-completion)
+;;     ("C-<tab>" . copilot-accept-completion)
+;;     ("C-c \\" . copilot-clear-overlay))
+;;   :config
+;;   (setq copilot-idle-delay 0.2)
+;;   (setq copilot-max-char 10000))
 
 (use-package git-commit :straight nil)
 (use-package magit
@@ -543,6 +506,7 @@
   :bind (
      ("C--" . expreg-contract)
      ("C-=" . expreg-expand)))
+
 (use-package treesit-auto
   :ensure t
   :config

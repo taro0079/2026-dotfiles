@@ -55,7 +55,7 @@ return {
 				},
 			})
 
-			ColorMyPencils("kurodake-green");
+			ColorMyPencils();
 		end
 	}
 

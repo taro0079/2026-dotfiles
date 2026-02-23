@@ -3,6 +3,6 @@ return {
 	dir = "~/.config/nvim",
 	lazy = false,
 	config = function()
-		require("kurodake-green").setup()
+		-- require("kurodake-green").setup()
 	end,
 }

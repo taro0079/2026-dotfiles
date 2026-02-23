@@ -33,7 +33,7 @@ local generate_phpdoc = function(args)
 	return lines
 end
 
-ls.add_snippets("php", {
+return {
 	s("pmeth", {
 		f(generate_phpdoc, { 1 }),
 		t({ "", "public function " }),
@@ -82,4 +82,4 @@ ls.add_snippets("php", {
 		i(1, "document"),
 		t({ "", " */" }),
 	}),
-})
+}

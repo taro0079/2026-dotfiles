@@ -9,7 +9,12 @@ return {
 		dependencies = { "rafamadriz/friendly-snippets" },
 
 		config = function()
-			require("luasnip.loaders.from_vscode").lazy_load()
+			require("luasnip.loaders.from_vscode").lazy_load({
+                path = { vim.fn.stdpath("config") .. "/lua/awesometaro/lazy/snippets" }
+            })
+			require("luasnip.loaders.from_lua").lazy_load({
+                paths = { vim.fn.stdpath("config") .. "/lua/awesometaro/lazy/luasnippets" }
+            })
 			local ls = require("luasnip")
 			-- ls.filetype_extend("javascript", { "jsdoc" })
 
@@ -57,7 +62,7 @@ return {
 				}),
 			})
 
-			require("awesometaro.lazy.luasnippets")
+			-- require("awesometaro.lazy.luasnippets")
 		end,
 	},
 }
