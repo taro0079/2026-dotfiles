@@ -163,10 +163,11 @@ export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
 export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
-export EDITOR="nvim"
+export EDITOR="hx"
 
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+

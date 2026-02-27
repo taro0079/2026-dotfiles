@@ -16,7 +16,7 @@ cp -r emacs "emacs-${today}"
 
 cd "emacs-${today}"
 ./autogen.sh
-./configure --prefix=$HOME/.local --with-tree-sitter --with-xwidgets --with-native-compilation=aot --with-imagemagick
+./configure --prefix=$HOME/.local --with-tree-sitter --with-xwidgets --with-native-compilation=aot --with-imagemagick --with-json
 make -j6
 make install -j6
 

@@ -49,6 +49,8 @@ C-y = [
 g = [":new", ":insert-output lazygit", ":redraw", "jump_backward", ":reload-all"]
 r = [':sh php-cs-fixer fix %{buffer_name} --config ./.php-cs-fixer.dist.php', ':reload-all']
 t = [':sh rpst-php-unit.sh %{buffer_name}',":vsplit-new",':insert-output cat /tmp/rpst-php-unit']
+# g = [":sh lazygit", ":reload-all"]
+# r = [':sh php-cs-fixer fix %{buffer_name} --config ./.php-cs-fixer.dist.php', ':reload-all']
 # t = [
 #   ":vsplit-new",
 #   ":insert-output rpst-php-unit.sh %{buffer_name}"
