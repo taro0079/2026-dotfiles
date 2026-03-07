@@ -1,4 +1,4 @@
-theme = "tokyonight_moon"
+theme = "jetbrains_dark"
 [editor]
 line-number = "relative"
 mouse = true
@@ -49,11 +49,14 @@ C-y = [
 g = [":new", ":insert-output lazygit", ":redraw", "jump_backward", ":reload-all"]
 r = [':sh php-cs-fixer fix %{buffer_name} --config ./.php-cs-fixer.dist.php', ':reload-all']
 t = [':sh rpst-php-unit.sh %{buffer_name}',":vsplit-new",':insert-output cat /tmp/rpst-php-unit']
-# g = [":sh lazygit", ":reload-all"]
-# r = [':sh php-cs-fixer fix %{buffer_name} --config ./.php-cs-fixer.dist.php', ':reload-all']
-# t = [
-#   ":vsplit-new",
-#   ":insert-output rpst-php-unit.sh %{buffer_name}"
-# ]
+c = [':sh BUNDLE_GEMFILE=~/.local/scripts/Gemfile path_to_clipboard.rb %{buffer_name} %{cursor_line}']
+
+[keys.normal." "."r"]
+t = ':sh transport_rpstv2.rb %{buffer_name}'
+T = [":sh zellij run -- remote_phpunit_rpstv2.rb %{buffer_name}"]
+[keys.normal." "."r"."a"]
+t = [":sh zellij run -- docker compose -f ../docker-compose.yml run --rm devcontainer ./bin/phpunit %{buffer_name}"]
+T = [":sh zellij run -- docker compose -f ../docker-compose.yml run --rm devcontainer ./bin/run_test_for_all"]
+
 [editor.inline-diagnostics]
 cursor-line="error"

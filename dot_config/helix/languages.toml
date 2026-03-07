@@ -210,7 +210,7 @@ auto-format = true
 [[language]]
 name = "ruby"
 auto-format = true
-language-servers = [ "solargraph", "lsp-ai", "gpt", "typos"]
+language-servers = [ "ruby-lsp", "gpt", "typos", "hx-lsp"]
 
 [[language]]
 name = "html"
