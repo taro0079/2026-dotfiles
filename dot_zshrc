@@ -73,7 +73,7 @@ ZSH_THEME="robbyrussell"
 ## plugin
 plugins=(
     git
-    zsh-autosuggestions
+    # zsh-autosuggestions
     # zsh-autocomplete
 )
 
