@@ -2,6 +2,9 @@ snippets:
     - name: git status
       keyword: gst
       snippet: git status --short --branch
+    - name: git add
+      keyword: ga
+      snippet: git add {{file}}
     - name: git commit message
       keyword: gcim
       snippet: git commit -m '{{commit_message}}'
@@ -11,4 +14,32 @@ snippets:
     - name: git switch
       keyword: gsw
       snippet: git switch {{branch}}
+    - name: branch
+      keyword: B
+      snippet: git symbolic-ref --short HEAD
+      context:
+        lbuffer: '^git\s+checkout\s+'
+      evaluate: true
+    - name: chezmoi add
+      keyword: cza
+      snippet: chezmoi add {{file}}
+    - name: chezmoi cd
+      keyword: ccd
+      snippet: chezmoi cd
+completions:
+  - name: kill pid
+    patterns:
+      - "^kill( .*)? $"
+    sourceCommand: "git branch -vv"
+    options:
+        --prompt: "'Git Branch > '"
+# completions:
+#     - name: kill signal
+#       patterns:
+#         - "^kill( .*)? $"
+#       sourceCommand: "LANG=C ps -ef | sed 1d"
+#       options:
+#         --prompt: "Kill Signal>"
+    
+        
 
