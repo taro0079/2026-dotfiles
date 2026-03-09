@@ -14,6 +14,9 @@ snippets:
     - name: git switch
       keyword: gsw
       snippet: git switch {{branch}}
+    - name: git log
+      keyword: gl
+      snippet: git log
     - name: branch
       keyword: B
       snippet: git symbolic-ref --short HEAD
