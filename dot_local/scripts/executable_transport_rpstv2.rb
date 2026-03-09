@@ -21,9 +21,9 @@ unless File.exist?(local_full_path)
 end
 
 remote_full_path = File.join(REMOTE_DEST, relative_path)
-
+remote_destination = "#{REMOTE_DEST}#{relative_path}"
 command = [
-  'rsync', '-avz', '-R', local_full_path, "#{REMOTE_USER}@#{REMOTE_HOST}:#{REMOTE_DEST}"
+  'rsync', '-avz', local_full_path, "#{REMOTE_USER}@#{REMOTE_HOST}:#{remote_destination}"
 ]
 
 success = system(*command)

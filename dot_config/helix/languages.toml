@@ -6,6 +6,10 @@
 command = "phpactor"
 args = [ "language-server", "--config-extra={\"language_server_completion.trim_leading_dollar\":true}" ]
 
+[language-server.rubocop]
+command = "bundle"
+args = ["exec", "rubocop", "--lsp"]
+
 [language-server.phpstan]
 command = "/Users/taro_morita/language-server-phpstan-extension/bin/phpstan-ls"
 args = [ "language-server" ]
@@ -150,6 +154,9 @@ content = "{CODE}"
 # role = "role"
 # content = "You are a code assistant chatbot. The user will ask you for assistance coding and you will do you bet to answer succinctly and accurately"
 
+[language-server.ruby-lsp]
+command="ruby-lsp"
+config = { diagnostic = true, formatting = true }
 
 # =========================================
 #  Language Configuration
@@ -210,13 +217,22 @@ auto-format = true
 [[language]]
 name = "ruby"
 auto-format = true
-language-servers = [ "ruby-lsp", "gpt", "typos", "hx-lsp"]
+formatter = { command = "bundle", args = ["exec", "rubocop", "--server", "--autocorrect", "--fail-level", "error", "--stdin", "corrected.rb", "--stderr"] }
+language-servers = [ "ruby-lsp", "gpt", "typos", "hx-lsp", "rubocop", "solargraph"]
+
+[[language]]
+name = "erb"
+file-types = ["erb"]
+language-servers = ["ruby-lsp", "vscode-html-language-server"]
+formatter = { command = "erb-format", args = ["--stdin", "--print-width", "80"] }
+auto-format = true
 
 [[language]]
 name = "html"
 file-types = ["html", "tpl" ]
 # HTMLでもAI補完を使いたい場合
 language-servers = [ "vscode-html-language-server", "lsp-ai" ]
+formatter = { command = "prettier", args = ["--parser", "html"] }
 
 [[language]]
 name = "markdown"

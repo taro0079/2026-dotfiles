@@ -1,7 +1,7 @@
-theme = "jetbrains_dark"
+theme = "rosepine-transparent"
 [editor]
 line-number = "relative"
-mouse = true
+mouse = false
 true-color = true
 color-modes = true
 auto-save = true
