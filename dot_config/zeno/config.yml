@@ -1,48 +1,82 @@
 snippets:
-    - name: git status
-      keyword: gst
-      snippet: git status --short --branch
-    - name: git add
-      keyword: ga
-      snippet: git add {{file}}
-    - name: git commit message
-      keyword: gcim
-      snippet: git commit -m '{{commit_message}}'
-    - name: git push
-      keyword: gp
-      snippet: git push
-    - name: git switch
-      keyword: gsw
-      snippet: git switch {{branch}}
-    - name: git log
-      keyword: gl
-      snippet: git log
-    - name: branch
-      keyword: B
-      snippet: git symbolic-ref --short HEAD
-      context:
-        lbuffer: '^git\s+checkout\s+'
-      evaluate: true
-    - name: chezmoi add
-      keyword: cza
-      snippet: chezmoi add {{file}}
-    - name: chezmoi cd
-      keyword: ccd
-      snippet: chezmoi cd
+  - name: git status
+    keyword: gst
+    snippet: git status --short --branch
+  - name: git add
+    keyword: ga
+    snippet: git add {{file}}
+  - name: git commit message
+    keyword: gcim
+    snippet: git commit -m '{{commit_message}}'
+  - name: git diff
+    keyword: gd
+    snippet: git diff
+  - name: git diff name only
+    keyword: gdn
+    snippet: git diff --name-only
+  - name: git push
+    keyword: gp
+    snippet: git push
+  - name: git switch
+    keyword: gsw
+    snippet: git switch {{branch}}
+  - name: git log
+    keyword: gl
+    snippet: git log
+  - name: branch
+    keyword: B
+    snippet: git symbolic-ref --short HEAD
+    context:
+      lbuffer: '^git\s+checkout\s+'
+    evaluate: true
+  - name: create github pull request
+    keyword: gpw
+    snippet: gh pr create --web
+  - name: chezmoi add
+    keyword: cza
+    snippet: chezmoi add {{file}}
+  - name: chezmoi cd
+    keyword: ccd
+    snippet: chezmoi cd
+  - name: docker compose exec
+    keyword: dce
+    snippet: docker compose exec
+  - name: docker compose run
+    keyword: dcr
+    snippet: docker compose run --rm 
+
 completions:
   - name: kill pid
     patterns:
       - "^kill( .*)? $"
-    sourceCommand: "git branch -vv"
+    sourceCommand: "LANG=C ps -ef | sed 1d"
+    excludePatterns:
+      # -l, -n or -s is followed by SIGNAL instead of PID
+      - " -[lns] $"
     options:
-        --prompt: "'Git Branch > '"
-# completions:
-#     - name: kill signal
-#       patterns:
-#         - "^kill( .*)? $"
-#       sourceCommand: "LANG=C ps -ef | sed 1d"
-#       options:
-#         --prompt: "Kill Signal>"
-    
-        
-
+      --multi: true
+      --prompt: "'Kill Process> '"
+    callback: "awk '{print $2}'"
+  - name: docker compose exec
+    patterns:
+      - "^docker compose exec $"
+    sourceCommand: "docker compose config --services"
+    options:
+      --prompt: "'docker services >'"
+  - name: chdir
+    patterns:
+      - "^cd $"
+    sourceCommand: "find . -path '*/.git' -prune -o -maxdepth 5 -type d -print0"
+    options:
+      # Added --read0 if null termination is used in `sourceCommand` output.
+      --read0: true
+      --prompt: "'Chdir> '"
+      --preview: "cd {} && ls -a | sed '/^[.]*$/d'"
+    callback: "cut -z -c 3-"
+    callbackZero: true # null termination is used in `callback` I/O
+  - name: ssh
+    patterns:
+      - "^ssh $"
+    sourceCommand: "grep 'Host' ~/.ssh/config | awk '{print $2}'"
+    options:
+      --prompt: "'SSH Hosts >'"

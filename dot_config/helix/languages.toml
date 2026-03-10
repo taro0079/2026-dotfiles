@@ -4,7 +4,7 @@
 
 [language-server.phpactor]
 command = "phpactor"
-args = [ "language-server", "--config-extra={\"language_server_completion.trim_leading_dollar\":true}" ]
+args = [ "language-server"]
 
 [language-server.rubocop]
 command = "bundle"
@@ -166,7 +166,14 @@ config = { diagnostic = true, formatting = true }
 name = "php"
 indent = { tab-width = 4, unit = "    "}
 # lsp-ai を追加
-language-servers = ["intelephense", "hx-lsp", "gpt", "typos"]
+language-servers = [
+{name = "intelephense"},
+{name = "hx-lsp"},
+{name = "gpt"},
+{name = "typos"},
+{name = "phpmd"},
+{name = "phpactor", except-features = ['completion']}
+]
 # formatter = { command = "bash", args = [ "-c", "cat > /tmp/helix_php_cs_fixer && php-cs-fixer fix --config=$PWD/.php-cs-fixer.dist.php --using-cache=no --quiet /tmp/helix_php_cs_fixer && cat /tmp/helix_php_cs_fixer"]}
 # formatter = {command = "php-cs-fixer", args = ["fix", "%{buffer_name}"]}
 auto-format = false
@@ -230,6 +237,7 @@ auto-format = true
 [[language]]
 name = "html"
 file-types = ["html", "tpl" ]
+auto-format = false
 # HTMLでもAI補完を使いたい場合
 language-servers = [ "vscode-html-language-server", "lsp-ai" ]
 formatter = { command = "prettier", args = ["--parser", "html"] }
