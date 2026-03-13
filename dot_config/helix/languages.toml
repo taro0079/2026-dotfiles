@@ -2,6 +2,9 @@
 #  Language Server Definitions
 # =========================================
 
+[language-server.efm]
+command = "efm-langserver"
+
 [language-server.phpactor]
 command = "phpactor"
 args = [ "language-server"]
@@ -9,10 +12,6 @@ args = [ "language-server"]
 [language-server.rubocop]
 command = "bundle"
 args = ["exec", "rubocop", "--lsp"]
-
-[language-server.phpstan]
-command = "/Users/taro_morita/language-server-phpstan-extension/bin/phpstan-ls"
-args = [ "language-server" ]
 
 [language-server.hx-lsp]
 command= "hx-lsp"
@@ -171,7 +170,7 @@ language-servers = [
 {name = "hx-lsp"},
 {name = "gpt"},
 {name = "typos"},
-{name = "phpmd"},
+{name = "efm"},
 {name = "phpactor", except-features = ['completion']}
 ]
 # formatter = { command = "bash", args = [ "-c", "cat > /tmp/helix_php_cs_fixer && php-cs-fixer fix --config=$PWD/.php-cs-fixer.dist.php --using-cache=no --quiet /tmp/helix_php_cs_fixer && cat /tmp/helix_php_cs_fixer"]}

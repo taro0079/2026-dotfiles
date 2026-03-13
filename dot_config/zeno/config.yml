@@ -11,6 +11,9 @@ snippets:
   - name: git diff
     keyword: gd
     snippet: git diff
+  - name: git checkout
+    keyword: gch
+    snippet: git checkout 
   - name: git diff name only
     keyword: gdn
     snippet: git diff --name-only
