@@ -1,5 +1,5 @@
 font-family = "Maple Mono NF"
-font-size = 12
+font-size = 14
 font-thicken=true
 font-feature=calt, liga, lig
 theme = TokyoNight Moon
@@ -8,7 +8,7 @@ window-padding-x = 0
 window-padding-y = 0
 window-padding-balance = true
 cursor-style = block
-fullscreen = true
+fullscreen = false
 cursor-opacity = 1
 background-opacity =0.8
 # background-blur-radius = 5
