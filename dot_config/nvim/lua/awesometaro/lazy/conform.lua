@@ -17,6 +17,7 @@ return {
         lua = { "stylua" },
         go = { "gofmt" },
         python = { "ruff_fix", "ruff_format" },
+        ruby = { "rubocop" },
         javascript = { "prettier" },
         typescript = { "prettier" },
         elixir = { "mix" },
