@@ -33,7 +33,7 @@ function transport_to_remote(local_path, remote_path)
 end
 
 function transport_v2()
-	local local_project_path = "~/ghq/rpst-v2/"
+	local local_project_path = "~/ghq/github.com/PRECS-Inc/rpst-v2"
 	local remote_project_path = "taro_morita@rpst-api:/var/lib/nfs-devel7-volume/dev-tmorita-rpst/var_www/rpst-v2/dev/"
 	transport_to_remote(local_project_path, remote_project_path)
 end

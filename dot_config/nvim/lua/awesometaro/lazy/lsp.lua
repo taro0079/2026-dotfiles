@@ -45,9 +45,7 @@ return {
       },
       handlers = {
         function(server_name) -- default handler (optional)
-          require("lspconfig")[server_name].setup({
-            capabilities = capabilities,
-          })
+          vim.lsp.config(server_name, { capabilities = capabilities })
         end,
 
         zls = function()
@@ -67,8 +65,7 @@ return {
         end,
         ["lua_ls"] = function()
           local lspconfig = require("lspconfig")
-
-          lspconfig.lua_ls.setup({
+          vim.lsp.config("lua_ls", {
             capabilities = capabilities,
             settings = {
               Lua = {
@@ -96,8 +93,7 @@ return {
           })
         end,
         ["tailwindcss"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.tailwindcss.setup({
+          vim.lsp.config("tailwindcss", {
             capabilities = capabilities,
             filetypes = {
               "html",
@@ -114,6 +110,10 @@ return {
           })
         end,
       },
+    })
+
+    vim.lsp.config("smarty_ls", {
+      capabilities = capabilities,
     })
 
     local cmp_select = { behavior = cmp.SelectBehavior.Select }

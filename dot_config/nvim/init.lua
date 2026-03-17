@@ -5,6 +5,7 @@ if not vim.g.vscode then
     require("lazy_init")
     require("awesometaro")
     require("toggle_term")
+    require("my_tree_sitter")
     -- require("kurodake-green")
 end
 
