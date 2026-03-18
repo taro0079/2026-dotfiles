@@ -10,6 +10,7 @@ return {
       { "<leader>v", group = "Lsp" },
       { "<leader>t", group = "Test" },
       { "<leader>g", group = "Git" },
+      { "-", group = "Php" },
     },
   },
   keys = {

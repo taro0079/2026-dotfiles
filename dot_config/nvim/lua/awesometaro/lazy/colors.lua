@@ -15,6 +15,26 @@ return {
     "erikbackman/brightburn.vim",
   },
   {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "olimorris/onedarkpro.nvim",
+    priority = 1000,
+  },
+  {
+    "oskarnurm/koda.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    -- config = function()
+    -- require("koda").setup({ transparent = true })
+    -- vim.cmd("colorscheme koda")
+    -- end,
+    config = true,
+  },
+  {
     "ellisonleao/gruvbox.nvim",
     name = "gruvbox",
     config = function()
@@ -56,6 +76,14 @@ return {
     end,
   },
   {
+    "tiesen243/vercel.nvim",
+    config = function()
+      require("vercel").setup({
+        theme = "dark",
+      })
+    end,
+  },
+  {
     "rose-pine/neovim",
     name = "rose-pine",
     config = function()
@@ -66,7 +94,7 @@ return {
         },
       })
 
-      ColorMyPencils("monokai-pro-octagon")
+      ColorMyPencils("onedark_dark")
     end,
   },
 }
