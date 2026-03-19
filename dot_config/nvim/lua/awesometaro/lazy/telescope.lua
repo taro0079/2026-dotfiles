@@ -15,6 +15,8 @@ return {
     end, { desc = "Find File Via Telescope" })
     vim.keymap.set("n", "<leader>pp", builtin.git_files, { desc = "Find Git File Via Telescope" })
     vim.keymap.set("n", "<leader>pb", builtin.buffers, { desc = "Pick Buffer Via Telescope" })
+    vim.keymap.set("n", "<leader>pm", builtin.marks, { desc = "Pick marks via telescope " })
+    vim.keymap.set("n", "<leader>pq", builtin.live_grep, { desc = "Pick live grep  via telescope " })
     vim.keymap.set("n", "<leader>pws", function()
       local word = vim.fn.expand("<cword>")
       builtin.grep_string({ search = word })
@@ -25,7 +27,7 @@ return {
     end, { desc = "Search current WORD in project" })
     vim.keymap.set("n", "<leader>ps", function()
       builtin.grep_string({ search = vim.fn.input("Grep > ") })
-    end, {desc="Grep and Find File"})
+    end, { desc = "Grep and Find File" })
     vim.keymap.set("n", "<leader>vh", builtin.help_tags, {})
   end,
 }

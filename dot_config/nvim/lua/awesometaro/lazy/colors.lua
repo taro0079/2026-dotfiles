@@ -94,7 +94,7 @@ return {
         },
       })
 
-      ColorMyPencils("onedark_dark")
+      ColorMyPencils("tokyonight")
     end,
   },
 }

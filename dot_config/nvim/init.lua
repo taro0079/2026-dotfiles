@@ -8,6 +8,7 @@ if not vim.g.vscode then
   require("awesometaro")
   require("toggle_term")
   require("my_tree_sitter")
+  require("utils.my_phptools")
   -- require("kurodake-green")
 end
 
