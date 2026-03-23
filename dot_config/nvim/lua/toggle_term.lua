@@ -25,7 +25,7 @@ end
 
 vim.keymap.set(
   { "n", "t" },
-  "<C-/>",
+  "<C-t>",
   toggle_bottom_terminal,
   { silent = true, desc = "Terminal: Toggle terminal at bottom" }
 )
