@@ -70,7 +70,7 @@ return {
 
     lint.linters_by_ft = {
       -- php = { "phpstan", "deptrac" },
-      php = { "deptrac" },
+      php = { "deptrac", "phpstan" },
       eruby = { "erb_lint" },
     }
 
