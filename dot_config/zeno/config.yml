@@ -13,13 +13,13 @@ snippets:
     snippet: git diff
   - name: git checkout
     keyword: gch
-    snippet: git checkout 
+    snippet: git checkout
   - name: git diff name only
     keyword: gdn
     snippet: git diff --name-only
   - name: git push
     keyword: gp
-    snippet: git push
+    snippet: git push --set-upstream origin $(git branch --contains | sed 's/* //')
   - name: git switch
     keyword: gsw
     snippet: git switch {{branch}}
@@ -46,7 +46,7 @@ snippets:
     snippet: docker compose exec
   - name: docker compose run
     keyword: dcr
-    snippet: docker compose run --rm 
+    snippet: docker compose run --rm
 
 completions:
   - name: kill pid
