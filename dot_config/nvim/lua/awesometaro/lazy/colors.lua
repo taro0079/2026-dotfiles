@@ -18,7 +18,9 @@ return {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    opts = {},
+    opts = {
+      transparent = true,
+    },
   },
   {
     "olimorris/onedarkpro.nvim",
@@ -33,6 +35,11 @@ return {
     -- vim.cmd("colorscheme koda")
     -- end,
     config = true,
+  },
+  {
+    "Alexvzyl/nordic.nvim",
+    lazy = false,
+    priority = 1000,
   },
   {
     "ellisonleao/gruvbox.nvim",
@@ -94,7 +101,7 @@ return {
         },
       })
 
-      ColorMyPencils("tokyonight")
+      ColorMyPencils("gruvbox")
     end,
   },
 }

@@ -8,39 +8,32 @@ return {
     "olimorris/neotest-phpunit",
   },
   config = function()
-    -- local rpst_local_maker = "/rpst%-v2/"
-    -- local ssh = {
-    --   remote_host = "dev-tmorita",
-    --   user = "taro_morita",
-    --   base_path = "/var/www/rpst-v2/dev",
-    --   phpunit_config = "/var/www/rpst-v2/dev/tests/app/phpunit/v9/phpunit.xml.dist",
-    -- }
-    --
-    -- local function is_rpst_buffer()
-    --   local file = vim.api.nvim_buf_get_name(0)
-    --   return file ~= "" and file:match(rpst_local_maker) ~= nil
-    -- end
-    --
-    -- local function rpst_ssh_phpunit_adaptor()
-    --   return require("neotest-phpunit")({
-    --     phpunit_cmd = function()
-    --       return {
-    --         "ssh",
-    --         ssh.user .. "@" .. ssh.remote_host,
-    --         string.format("php %s/vendor/bin/phpunit -c %s", ssh.base_path, ssh.phpunit_config),
-    --       }
-    --     end,
-    --   })
-    -- end
     local neotest = require("neotest")
     neotest.setup({
       adapters = {
-        require("neotest-phpunit"),
+        -- require("neotest-phpunit"),
+        require("neotest-phpunit")({
+          phpunit_cmd = function()
+            local root = vim.fn.getcwd()
+            return {
+              root .. "/vendor/bin/phpunit",
+              "--configuration",
+              root .. "/tests/app/phpunit/v9/phpunit.xml.dist",
+            }
+          end,
+          --   filter_dirs = { ".git", "node_modules", "vendor", "storage", "bootstrap" },
+        }),
       },
     })
     vim.keymap.set("n", "<leader>tn", function()
       require("neotest").run.run()
     end, { desc = "Run the nearest test" })
+    vim.keymap.set("n", "<leader>to", function()
+      require("neotest").output.open({ enter = true })
+    end, { desc = "Open test output" })
+    vim.keymap.set("n", "<leader>tp", function()
+      require("neotest").output_panel.toggle()
+    end, { desc = "Toggle test output panel" })
     vim.keymap.set(
       "n",
       "<leader>tf",

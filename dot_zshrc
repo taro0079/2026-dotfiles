@@ -184,3 +184,6 @@ bindkey '^i' zeno-completion
 bindkey '^x^p' zeno-insert-snippet
 bindkey '^r' zeno-history-selection
 bindkey '^x^f' zeno-ghq-cd
+
+# OpenClaw Completion
+source "/Users/taro_morita/.openclaw/completions/openclaw.zsh"

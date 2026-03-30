@@ -1,3 +1,5 @@
+;;; .emacs --- Emacs configuration -*- lexical-binding: t; -*-
+
 (scroll-bar-mode -1)
 (electric-pair-mode 1)
 (menu-bar-mode 1)
@@ -29,14 +31,12 @@
 (load custom-file :no-error-file-is-missing)
 
 
-;; (require 'package)
-(package-initialize)
-
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; package.el is not needed — straight.el handles everything
+;; (package-initialize)
 
 
 ;; straight setting
-(defvar bootstrap-version)
+ (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el"
                          user-emacs-directory))
@@ -54,11 +54,6 @@
 (require 'straight-x)
 (straight-use-package 'use-package)
 
-(use-package yasnippet
-  :straight t
-  :config
-  (yas-global-mode 1))
-(use-package yasnippet-snippets :straight t :after yasnippet)
 (use-package delsel
   :ensure nil
   :hook (after-init . delete-selection-mode))
@@ -75,59 +70,6 @@
                       ))
   :mode "\\.php\\'"
     )
-(use-package company
-  :straight t  ; :ensure t より straight 環境ならこちらがベター
-  :init
-  (global-company-mode)
-  :config
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 2
-        company-selection-wrap-around t)
-
-  ;; yasnippet を全ての backend に統合する関数
-  (defun my/company-backend-with-yasnippet (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-
-  ;; 既存の backends に適用
-  (setq company-backends (mapcar #'my/company-backend-with-yasnippet company-backends)))
-(use-package phpactor
-  :ensure t
-  :config
-  (add-hook 'php-mode-hook
-            (lambda ()
-              (make-local-variable 'completion-at-point-functions)
-              (add-to-list 'completion-at-point-functions #'phpactor-complete-at-point))))
-(use-package company-phpactor :ensure t)
-(use-package flycheck-phpstan
-  :straight t
-  :after php-mode
-  :hook
-  ((php-mode . flycheck-mode))
-  
-  )
-;; (use-package flycheck-phpstan
-;;   :ensure t
-;;   :hook
-;;   ;; (php-ts-mode . flymake-phpstan-turn-on)
-;;   (php-mode . flymake-phpstan-turn-on)
-;;   )
-;; ;; (use-package git-commit :straight t)
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
-(use-package magit-prime
-  :ensure t
-  :config
-  (add-hook 'magit-pre-refresh-hook 'magit-prime-refresh-cache))
-
-(use-package diff-hl
-  :ensure t
-  :hook ((prog-mode . diff-hl-mode)
-         (text-mode . diff-hl-mode)
-         (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 (use-package ddskk
   :straight t
@@ -152,8 +94,129 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+(use-package marginalia
+  :straight t
+  :init
+  (marginalia-mode))
+(use-package consult
+  :ensure t
+  ;; よく使う標準コマンドを Consult の便利なコマンドに置き換える
+  :bind (("C-x b" . consult-buffer)         ;; バッファ切り替え（最近使ったファイルなども含む）
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-s" . consult-line)             ;; 現在のバッファ内を検索（プレビュー付き）
+         ("M-y" . consult-yank-pop)         ;; クリップボード（kill-ring）の履歴から貼り付け
+         ("M-g g" . consult-goto-line)      ;; 行指定ジャンプ
+         ("M-g i" . consult-imenu)          ;; 関数や見出しへのジャンプ
+         ("C-c r" . consult-ripgrep))       ;; ripgrepを使ったプロジェクト内検索（※rgのインストールが必要）
+         
+  :config
+  ;; Consultのプレビューを遅延させる（動作を軽くするため）
+  (setq consult-preview-key 'any))
+(use-package consult-ghq
+  :straight t
+  :bind
+  ("C-c g p" . consult-ghq-switch-project)
+  ("C-c g f" . consult-ghq-find)
+  ("C-c g g" . consult-ghq-grep)
+)
 (use-package inkpot-theme
   :straight t
   :config
   (load-theme 'inkpot)
   )
+(with-eval-after-load 'eglot
+  (defun my-eglot-disable-file-watching (orig-fn &rest args)
+    (let ((caps (apply orig-fn args)))
+      ;; didChangeWatchedFiles のサポートを偽装（false）する
+      (setf (cl-getf (cl-getf caps :workspace) :didChangeWatchedFiles)
+            '(:dynamicRegistration :json-false :relativePatternSupport :json-false))
+      caps))
+  (advice-add 'eglot-client-capabilities :around #'my-eglot-disable-file-watching))
+
+;; サーバープログラムの設定 (Node 20とメモリ拡張の安全設定は維持)
+(use-package eglot
+  :custom
+  (eglot-sync-connect 1)
+  (eglot-autoshutdown t)
+  (eglot-ignored-server-capabilities '(:documentHighlightProvider))
+  
+  :config
+  (add-to-list 'eglot-server-programs
+               '((php-mode php-ts-mode) . ("mise" "exec" "node@20" "--" "env" "NODE_OPTIONS=--max-old-space-size=8192" "intelephense" "--stdio")))
+
+  :hook
+  ((python-ts-mode . eglot-ensure)
+   (lua-ts-mode . eglot-ensure)
+   (js-ts-mode . eglot-ensure)
+   (typescript-ts-mode . eglot-ensure)
+   (php-mode . eglot-ensure)
+   (php-ts-mode . eglot-ensure)
+   (rust-ts-mode . eglot-ensure)))
+
+;; Completion: Corfu
+(use-package corfu
+  :after eglot
+  :ensure t
+  :custom
+  (corfu-auto t)
+  (corfu-cycle t)
+  (corfu-quit-no-match t)
+  :config
+  (global-corfu-mode))
+
+;; Cape
+(use-package cape
+  :ensure t
+  :after corfu
+  :bind ("C-c p" . cape-prefix-map)
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'completion-at-point-functions #'yasnippet-capf)
+  (add-hook 'completion-at-point-functions #'eglot-completion-at-point))
+
+;; Eldoc + Eldoc-box
+(use-package eldoc
+  :custom
+  (eldoc-idle-delay 0.5)
+  :hook (eglot-managed-mode . eldoc-mode))
+
+(use-package eldoc-box
+  :straight t
+  :config
+  (setq eldoc-box-hover-render-function
+        (lambda (contents)
+          (with-temp-buffer
+            (insert contents)
+            (markdown-mode)
+            (font-lock-ensure)
+            (buffer-string)))))
+
+;; Yasnippet
+(use-package yasnippet
+  :after cape
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet
+  :config
+  (yas-reload-all))
+
+(use-package yasnippet-capf
+  :ensure t
+  :after cape
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+
+(use-package magit
+  :straight t
+  :custom
+  (magit-auto-revert-mode t)
+  :bind
+  (("C-x g" . magit-status)))
+
+(put 'upcase-region 'disabled nil)
