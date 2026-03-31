@@ -162,7 +162,6 @@ export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
 export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
-export EDITOR="hx"
 
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
@@ -187,3 +186,6 @@ bindkey '^x^f' zeno-ghq-cd
 
 # OpenClaw Completion
 source "/Users/taro_morita/.openclaw/completions/openclaw.zsh"
+
+export EDITOR="nvim"
+export XDG_CONFIG_HOME="$HOME/.config"

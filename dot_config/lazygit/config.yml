@@ -1,0 +1,9 @@
+os:
+    # edit: 'IN_LAZYGIT=1 nvim -- {{filename}}'
+    # editAtLine: 'IN_LAZYGIT=1 nvim +{{line}} -- {{filename}}'
+    # editAtLineAndWait: 'IN_LAZYGIT=1 nvim +{{line}} -- {{filename}}'
+    # editInTerminal: true
+    # openDirInEditor: 'IN_LAZYGIT=1 nvim -- {{dir}}'
+    editPreset: "nvim-remote"
+gui:
+    showIcons: true
