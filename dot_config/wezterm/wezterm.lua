@@ -1,6 +1,8 @@
 local wezterm = require 'wezterm';
 local mac = wezterm.target_triple:find("darwin")
 local linux = wezterm.target_triple:find("linux")
+local config = wezterm.config_builder()
+config.max_fps=240
 
 local mykeys = {
     { key = 'n', mods = 'OPT',  action = wezterm.action.ToggleFullScreen },
@@ -22,7 +24,7 @@ if mac then
         color_scheme = "tokyonight",
         audible_bell = "Disabled",
         font = wezterm.font_with_fallback {
-            { family = 'Maple Mono NF',           weight = "Medium",  harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' } },
+            { family = 'CaskaydiaCove Nerd Font',           weight = "Medium",  harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' } },
             { family = 'PleckJP',                 weight = "Regular", italic = false },
             { family = 'Cica',                    weight = "Regular", italic = false },
             { family = 'CaskaydiaCove Nerd Font', weight = "Regular", italic = false },
