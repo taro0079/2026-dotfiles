@@ -26,6 +26,7 @@ return {
         eruby = { "erb_format" },
         yaml = { "yamlfmt" },
         yml = { "yamlfmt" },
+        astro = { "prettier" },
       },
       formatters = {
         ["clang-format"] = {
