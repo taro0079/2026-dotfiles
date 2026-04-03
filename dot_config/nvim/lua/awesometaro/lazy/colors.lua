@@ -95,6 +95,9 @@ return {
     name = "catppuccin",
     priority = 1000,
   },
+    {
+        "rebelot/kanagawa.nvim",
+    },
   {
     "rose-pine/neovim",
     name = "rose-pine",
@@ -106,7 +109,7 @@ return {
         },
       })
 
-      ColorMyPencils("catppuccin")
+      ColorMyPencils("kanagawa")
     end,
   },
 }

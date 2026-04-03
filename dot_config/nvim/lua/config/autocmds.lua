@@ -10,7 +10,7 @@
 -- =============================================================================
 -- カスタムコマンドの登録
 -- =============================================================================
-require("utils.phpunit").setup()
+-- require("utils.phpunit").setup()
 require("utils.transport").setup()
 require("utils.cmd_to_quickfix").setup()
 
