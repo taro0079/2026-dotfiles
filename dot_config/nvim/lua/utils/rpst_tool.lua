@@ -24,6 +24,7 @@ function M.run_phpunit_at_remote()
   local test_target_path = string.format("%s/%s", cfg.base_path, vim.fn.expand("%:."))
   local phpunit_cmd =
     string.format("php %s/vendor/bin/phpunit -c %s %s", cfg.base_path, cfg.phpunit_config, test_target_path)
+    print(phpunit_cmd)
   local full_cmd = string.format("ssh %s@%s '%s'", cfg.user, cfg.remote_host, phpunit_cmd)
 
   -- 非同期でターミナルに表示

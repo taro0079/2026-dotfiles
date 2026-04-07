@@ -1,4 +1,4 @@
-theme = "dracula_at_night"
+theme = "gruvbox"
 [editor]
 line-number = "relative"
 mouse = false
@@ -37,6 +37,13 @@ render = false
 "C-[" = "normal_mode"
 [keys.normal]
 "C-S-`" = "switch_to_uppercase"
+# C-y = [
+#   ':sh rm -f /tmp/unique-file',
+#   ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+#   ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+#   ':open %sh{cat /tmp/unique-file}',
+#   ':redraw',
+# ]
 C-y = [
   ':sh rm -f /tmp/unique-file',
   ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
@@ -45,10 +52,17 @@ C-y = [
   ':redraw',
 ]
 
+# C-y = [
+#   ':sh rm -rf /tmp/unique-file && tmux display-popup -E -w 80% -h 80% -E TERM=xterm-256color yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+#   ':open %sh{cat /tmp/unique-file 2>/dev/null}',
+#   ':redraw'
+# ]
+
 [keys.normal."'"]
 # g = [":new", ":insert-output lazygit", ":redraw", "jump_backward", ":reload-all"]
 g = [
   ':sh zellij run -f -- lazygit',
+  # ':sh tmux display-popup -E -w 80%% -h 80%% lazygit',
   ':redraw',
   'jump_backward',
   ':reload-all'
@@ -61,7 +75,8 @@ c = [':pipe BUNDLE_GEMFILE=~/.local/scripts/Gemfile change_case.rb']
 
 [keys.normal."'"."r"]
 t = ':sh transport_rpstv2.rb %{buffer_name}'
-T = [":sh zellij run -- remote_phpunit_rpstv2.rb %{buffer_name}"]
+# T = [":sh tmux split-window remote_phpunit_rpstv2.rb %{buffer_name}"]
+T = [":sh zellij run --  remote_phpunit_rpstv2.rb %{buffer_name}"]
 r = ":sh git commit --allow-empty -m \"$(BUNDLE_GEMFILE=~/.local/scripts/Gemfile ruby ~/.local/scripts/make_pr_title.rb $(git branch --show-current | sed 's|f/||'))\""
 [keys.normal."'"."r"."a"]
 t = [":sh zellij run -- docker compose -f ../docker-compose.yml run --rm devcontainer ./bin/phpunit %{buffer_name}"]
